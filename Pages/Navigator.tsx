@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import FirstScreen from './FirstScreen';
 import SecondScreen from './InstallationScreen';
 import UserScreen from './UserScreen';
+import UserImageScreen from './UserImageScreen';
 
 
 const Stack = createStackNavigator();
@@ -13,6 +14,7 @@ const Navigator: React.FC = () => {
       <Stack.Screen name="Hem" component={FirstScreen} />
       <Stack.Screen name="Inställningar" component={SecondScreen} />
       <Stack.Screen name="Användarsidan" component={UserScreen} />
+      <Stack.Screen name="Fotobibliotek" component={UserImageScreen} />
     </Stack.Navigator>
   );
 };
