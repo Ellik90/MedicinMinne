@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 
-const InstallationScreen: React.FC = () => {
+type InstallationScreenProps = {
+  navigation: NavigationProp<any>;
+};
+
+
+ 
+
+const InstallationScreen: React.FC<InstallationScreenProps> = () => {
+  const navigation = useNavigation<NavigationProp<any>>();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [personnummer, setPersonnummer] = useState('');
@@ -58,9 +67,11 @@ const InstallationScreen: React.FC = () => {
 
 <TouchableOpacity
         style={styles.button}
-        onPress={handleSubmit}
+        onPress={() => {
+          navigation.navigate('Användarsidan');
+        }}
       >
-        <Text style={styles.buttonText}>Skicka</Text>
+        <Text style={styles.buttonText}>Registrera</Text>
       </TouchableOpacity>
 
 
