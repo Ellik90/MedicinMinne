@@ -1,40 +1,44 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
-  Text,
-  TouchableOpacity,
   StyleSheet,
-  StatusBar,
 } from "react-native";
-import {
-  useNavigation,
-  NavigationProp,
-  useNavigationState,
-} from "@react-navigation/native";
+
 import ImageViewer from "../Components/ImageViewer";
 import * as ImagePicker from "expo-image-picker";
 import ButtonImageViev from "../Components/ButtonImageViev";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from './Navigator';
+import { RootStackParamList } from "./Navigator";
+import { useImageUpload } from "../Contexts/ImageUploadContext";
+import { useMedicationContext } from "../Contexts/MedicationContext";
 
 const PlaceholderImage = require("../assets/background-imagee.png");
 
 type Props = NativeStackScreenProps<RootStackParamList, "Fotobibliotek">;
 
 export default function UserImageScreen({ navigation }: Props) {
-  const [selectedImage, setSelectedImage] = useState<string>('');
+  const { selectedImage, setSelectedImage } = useImageUpload();
+  const { medication, setMedication } = useMedicationContext();
 
-  const pickImageAsync = async () => {
+  const selectImage = async () => {
+    if (selectedImage) {
+      setMedication({ ...medication, url: selectedImage});
+      console.log(selectedImage);
+      navigation.navigate("MedicationInfoScreen");
+    } else {
+      alert("You did not select any image.");
+    }
+  }
+
+  const handleSelectImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       quality: 1,
     });
-  
     if (!result.canceled) {
-      // setSelectedImage(result.uri); // Uppdatera selectedImage med URI
-      console.log('Bild URI:', result);
+      setSelectedImage(result.assets[0].uri);
     } else {
-      alert('Du valde inte någon bild.');
+      alert("You did not select any image.");
     }
   };
 
@@ -50,9 +54,9 @@ export default function UserImageScreen({ navigation }: Props) {
         <ButtonImageViev
           theme="primary"
           label="Choose a photo"
-          onPress={pickImageAsync}
+          onPress={handleSelectImage}
         />
-        <ButtonImageViev label="Use this photo" />
+        <ButtonImageViev  theme="primary" label="Use this photo"  onPress={selectImage} />
       </View>
     </View>
   );
@@ -74,10 +78,8 @@ const styles = StyleSheet.create({
     borderRadius: 18,
   },
   footerContainer: {
-    flex: 1 / 3,
+    flex: 1,
     alignItems: "center",
   },
 });
-
-
 
