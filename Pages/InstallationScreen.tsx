@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-
-type InstallationScreenProps = {
-  navigation: NavigationProp<any>;
-};
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from './Navigator';
 
 
- 
+type Props = NativeStackScreenProps<RootStackParamList, 'Inställningar'>;
 
-const InstallationScreen: React.FC<InstallationScreenProps> = () => {
-  const navigation = useNavigation<NavigationProp<any>>();
+export default function InstallationScreen({navigation}: Props){
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [personnummer, setPersonnummer] = useState('');
@@ -109,5 +106,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InstallationScreen;
+
 

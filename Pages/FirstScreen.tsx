@@ -1,14 +1,12 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from './Navigator';
 
-type FirstScreenProps = {
-  navigation: NavigationProp<any>;
-};
+type Props = NativeStackScreenProps<RootStackParamList, 'Menusida'>;
 
-const FirstScreen: React.FC<FirstScreenProps> = () => {
-  const navigation = useNavigation<NavigationProp<any>>();
-
+export default function FirstScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Välkommen till Medicinminnesappen</Text>
@@ -22,7 +20,7 @@ const FirstScreen: React.FC<FirstScreenProps> = () => {
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -47,7 +45,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FirstScreen;
+
 
 
 

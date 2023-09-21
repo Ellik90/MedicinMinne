@@ -1,24 +1,17 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, StatusBar  } from "react-native";
-import { useNavigation, NavigationProp, useNavigationState } from "@react-navigation/native";
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from './Navigator';
 
+type Props = NativeStackScreenProps<RootStackParamList, 'Användarsidan'>;
 
-type UserScreenProps = {
-  navigation: NavigationProp<any>;
-};
-
-const UserScreen: React.FC<UserScreenProps> = () => {
-  const navigation = useNavigation<NavigationProp<any>>();
-  
-
-
+export default function UserScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
-     
-      
-    <Text>Välkommen</Text>
+      <Text style={styles.welcomeText}>Välkommen</Text>
 
-    <TouchableOpacity
+      <TouchableOpacity
         style={styles.button}
         onPress={() => {
           navigation.navigate('Fotobibliotek');
@@ -26,31 +19,35 @@ const UserScreen: React.FC<UserScreenProps> = () => {
       >
         <Text style={styles.buttonText}>Foto från bibliotek</Text>
       </TouchableOpacity>
-
     </View>
-    
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffff',
+    backgroundColor: '#ffffff', // Vit bakgrundsfärg
     alignItems: 'center',
-  },  
+    justifyContent: 'center', // Centrera både horisontellt och vertikalt
+  },
+  welcomeText: {
+    padding: 10,
+    color: 'black',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
   button: {
     backgroundColor: 'pink', // Bakgrundsfärg (rosa)
-    borderRadius: 5,
-    padding: 15,
+    padding: 10,
     alignItems: 'center',
+    marginTop: 20, // Avstånd från föregående element
   },
   buttonText: {
     color: 'white', // Textfärg (vit)
     fontSize: 20,
     fontWeight: 'bold',
   },
-
-
 });
 
-export default UserScreen;
+
+

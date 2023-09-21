@@ -3,7 +3,7 @@ import { StyleSheet, Image, ImageSourcePropType } from "react-native";
 
 interface ImageViewerProps {
   placeholderImageSource: ImageSourcePropType;
-  selectedImage?: string | null;
+  selectedImage?: string;
 }
 
 export default function ImageViewer({

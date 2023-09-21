@@ -19,7 +19,7 @@ export default function ButtonImageViev({ label, theme = "default", onPress }: B
           onPress={onPress}
         >
           <FontAwesome
-            name="picture-o"
+            name="picture-o" // Ändra "picture-o" till "picture"
             size={18}
             color="#25292e"
             style={styles.buttonIcon}
@@ -64,3 +64,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
