@@ -2,32 +2,39 @@ import React, { useState } from 'react';
 import { View, ScrollView, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from './Navigator';
-import { useUserContext } from '../Contexts/UserContext';
+import { useUserContext,  } from '../Contexts/UserContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Registrering'>;
 
 export default function InstallationScreen({ navigation }: Props) {
-  const { user, setUser } = useUserContext();
+  const { user, addUser } = useUserContext();
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [personnummer, setPersonnummer] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [passWord, setPassWord] = useState('');
   const [logInName, setLogInName] = useState('');
+  const [passWord, setPassWord] = useState('');
+ 
 
   const handleSubmit = () => {
     const newUser = {
       id: user?.id, // Behåll befintligt användar-ID om det finns
-      name: `${firstName} ${lastName} ${personnummer} ${phoneNumber} ${passWord} ${logInName}`,
+      name: `${firstName} ${lastName}`,
+      username: `${logInName}`,
+      phoneNumber:`${phoneNumber}`,
+      passWord: `${passWord}`,
+      personnummer:`${personnummer}`,
       medications: [], // Du kan lägga till mediciner här om det behövs
     };
 
-    setUser(newUser);
+    addUser(newUser);
     // Skicka data till en API eller utför önskade åtgärder med användarens data
     console.log('Förnamn:', firstName);
     console.log('Efternamn:', lastName);
     console.log('Personnummer:', personnummer);
+    console.log('Telefonnummer:', phoneNumber);
+    console.log('Användarnamn:', logInName);
     console.log('Telefonnummer:', phoneNumber);
     console.log('Lösenord:', passWord);
 

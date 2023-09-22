@@ -1,33 +1,36 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Medication } from './MedicationContext';
-
-interface User {
-  id?: number; // Ändra från 'string' till 'number'
-  name?: string;
-  medications?: Medication[];
-}
+import { User, users } from '../Data';
 
 // Skapa en kontext för användaren
 type UserContextType = {
   user: User | null;
-  setUser: (user: User | null) => void; // Lägg till parameter för att sätta användaren
+  setUser: (user: User | null) => void;
+  userLogIn: (password: string, username:string) => boolean;
+  addUser: (user: User | null) => void;
 };
-
-// Skapa en dummyanvändare
-// const mockedUser: User | null = {
-//   id: 1,
-//   name: 'Elina',
-//   medications: [{ url: "data:image/jpeg;base64,...", name: "Sertralin", comment: "Ta 1 gång på morgonen, 50 mg." }]
-// };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 // Skapa en anpassad komponent som använder kontexten
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>({id:0, name:"", medications:[]});
+  const [user, setUser] = useState<User | null>({id:"", name:"", medications:[]});
+
+  function userLogIn(password:string, username: string){
+    const userFound = users.find(u => u.password == password && u.username == username);
+    console.log(userFound);
+    if(userFound){
+        console.log(userFound);
+        setUser(userFound);
+        return true;
+    }
+    return false;
+  }
+  function addUser(){
+
+  }
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, userLogIn, addUser}}>
       {children}
     </UserContext.Provider>
   );
