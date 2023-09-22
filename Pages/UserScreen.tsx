@@ -12,7 +12,8 @@ export default function UserScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>Välkommen</Text>
+      <Text style={styles.welcomeText}>Välkommen {user?.name}</Text>
+      <Text></Text>
 
       <TouchableOpacity
         style={styles.button}

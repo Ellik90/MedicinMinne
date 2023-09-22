@@ -4,44 +4,27 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "./Navigator";
 
-type Props = NativeStackScreenProps<RootStackParamList, "Hem">;
+type Props = NativeStackScreenProps<RootStackParamList, "Inloggning">;
 
-export default function FirstScreen({ navigation }: Props) {
+export default function LoginScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            navigation.navigate("Inloggning");
-          }}
-        >
-          <Text style={styles.buttonText}>Logga in</Text>
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.title}>Välkommen till Medicinminnesappen</Text>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          navigation.navigate("Registrering");
+          navigation.navigate("Användarsidan");
         }}
       >
-        <Text style={styles.buttonText}>Kom igång</Text>
+        <Text style={styles.buttonText}>Bekräfta</Text>
       </TouchableOpacity>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  buttonContainer: {
-    position: "absolute",
-    top: 10,
-    right: 10,
   },
   title: {
     fontSize: 30,

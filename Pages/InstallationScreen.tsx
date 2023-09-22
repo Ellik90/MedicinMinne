@@ -1,30 +1,41 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, ScrollView, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from './Navigator';
+import { useUserContext } from '../Contexts/UserContext';
 
+type Props = NativeStackScreenProps<RootStackParamList, 'Registrering'>;
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Inställningar'>;
-
-export default function InstallationScreen({navigation}: Props){
+export default function InstallationScreen({ navigation }: Props) {
+  const { user, setUser } = useUserContext();
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [personnummer, setPersonnummer] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [PassWord, setPassWord] = useState('');
+  const [passWord, setPassWord] = useState('');
+  const [logInName, setLogInName] = useState('');
 
   const handleSubmit = () => {
+    const newUser = {
+      id: user?.id, // Behåll befintligt användar-ID om det finns
+      name: `${firstName} ${lastName} ${personnummer} ${phoneNumber} ${passWord} ${logInName}`,
+      medications: [], // Du kan lägga till mediciner här om det behövs
+    };
+
+    setUser(newUser);
     // Skicka data till en API eller utför önskade åtgärder med användarens data
     console.log('Förnamn:', firstName);
     console.log('Efternamn:', lastName);
     console.log('Personnummer:', personnummer);
     console.log('Telefonnummer:', phoneNumber);
-    console.log('Lösenord:', PassWord);
+    console.log('Lösenord:', passWord);
+
+    navigation.navigate('Hem');
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.text}>Förnamn:</Text>
       <TextInput
         style={styles.input}
@@ -52,29 +63,31 @@ export default function InstallationScreen({navigation}: Props){
         onChangeText={(text) => setPhoneNumber(text)}
         value={phoneNumber}
       />
+      <Text style={styles.text}>Välj Användarnamn:</Text>
+      <TextInput
+        style={styles.input}
+        onChangeText={(text) => setLogInName(text)}
+        value={logInName}
+      />
 
-<Text style={styles.text}>Lösenord:</Text>
+      <Text style={styles.text}>Välj Lösenord:</Text>
       <TextInput
         style={styles.input}
         onChangeText={(text) => setPassWord(text)}
-        value={phoneNumber}
+        value={passWord}
       />
 
-      
-
-<TouchableOpacity
+      <TouchableOpacity
         style={styles.button}
-        onPress={() => {
-          navigation.navigate('Användarsidan');
-        }}
+        onPress={handleSubmit}
       >
         <Text style={styles.buttonText}>Registrera</Text>
       </TouchableOpacity>
-
-
-    </View>
+    </ScrollView>
   );
-};
+}
+
+
 
 const styles = StyleSheet.create({
   container: {
