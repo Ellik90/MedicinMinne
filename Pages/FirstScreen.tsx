@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   button: {
-    backgroundColor: "pink", // Bakgrundsfärg för knappen
+    backgroundColor: "pink", 
     padding: 15,
     borderRadius: 5,
   },

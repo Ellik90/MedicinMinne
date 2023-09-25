@@ -25,11 +25,10 @@ export default function InstallationScreen({ navigation }: Props) {
       phoneNumber:`${phoneNumber}`,
       passWord: `${passWord}`,
       personnummer:`${personnummer}`,
-      medications: [], // Du kan lägga till mediciner här om det behövs
+      medications: [], 
     };
 
     addUser(newUser);
-    // Skicka data till en API eller utför önskade åtgärder med användarens data
     console.log('Förnamn:', firstName);
     console.log('Efternamn:', lastName);
     console.log('Personnummer:', personnummer);

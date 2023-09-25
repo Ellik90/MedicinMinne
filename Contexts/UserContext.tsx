@@ -11,7 +11,7 @@ type UserContextType = {
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-// Skapa en anpassad komponent som använder kontexten
+
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>({id:"", name:"", medications:[]});
 
@@ -36,7 +36,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   );
 };
 
-// Använd en egen hook för att enkelt komma åt kontexten
 export const useUserContext = () => {
   const context = useContext(UserContext);
   if (!context) {

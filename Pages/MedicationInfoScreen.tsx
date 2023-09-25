@@ -1,11 +1,10 @@
-// Medication.ts
+
 interface Medication {
     name: string;
-    url?: string | undefined; // Gör url valfri
+    url?: string | undefined; 
     comment?: string | undefined;
   }
-  
-  // MedicationInfoScreen.tsx
+
   import React, { useState } from "react";
   import { View, TextInput, Text, Image, Button } from "react-native";
   import { useMedicationContext } from "../Contexts/MedicationContext";
@@ -21,26 +20,25 @@ type Props = NativeStackScreenProps<RootStackParamList, "MedicationInfoScreen">;
     const { user, addUser, setUser} = useUserContext();
 
     const handleTextChange = (newText: string) => {
-        setText(newText); // Uppdatera den lokala texten när användaren ändrar texten
+        setText(newText); 
         setMedication({ ...medication, name: newText, comment: newText });
       };
 
         
       const saveMedicationToUser = () => {
-        // Skapa en kopia av användarens mediciner eller en tom lista om användaren inte har några mediciner ännu
         const updatedMedications = user?.medications ? [...user.medications] : [];
       
-        // Konvertera Medication till Medicin och lägg till den i listan
+ 
         if (medication) {
           const newMedicin: Medication = {
             name: medication.name || "",
-            url: medication.url || "", // Du kan lägga till defaultvärde här om det behövs
-            comment: medication.comment || "", // Du kan lägga till defaultvärde här om det behövs
+            url: medication.url || "", 
+            comment: medication.comment || "", 
           };
           updatedMedications.push(newMedicin);
         }
       
-        // Uppdatera användaren med de uppdaterade medicinerna
+        
         setUser({ ...user, medications: updatedMedications });
         navigation.navigate("Användarsidan");
       };

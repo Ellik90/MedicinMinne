@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-// Skapa en kontext för bilduppladdning
 type ImageUploadContextType = {
   selectedImage: string | null;
   setSelectedImage: (image: string | null) => void;
@@ -8,7 +7,6 @@ type ImageUploadContextType = {
 
 const ImageUploadContext = createContext<ImageUploadContextType | undefined>(undefined);
 
-// Skapa en anpassad komponent som använder kontexten
 export const ImageUploadProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
@@ -19,7 +17,6 @@ export const ImageUploadProvider: React.FC<{ children: ReactNode }> = ({ childre
   );
 };
 
-// Använd en egen hook för att enkelt komma åt kontexten
 export const useImageUpload = () => {
   const context = useContext(ImageUploadContext);
   if (!context) {

@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions'; // Importera Permissions från Expo
+import * as Permissions from 'expo-permissions';
 
 export default function MedicationNotificationScreen() {
   const [isDatePickerVisible, setDatePickerVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   useEffect(() => {
-    // Kontrollera användarens tillstånd för notiser vid komponentens montering
     checkNotificationPermission();
   }, []);
 
@@ -17,7 +16,6 @@ export default function MedicationNotificationScreen() {
     const { status } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
 
     if (status !== 'granted') {
-      // Om användaren inte har gett tillstånd, fråga om det
       const { status: newStatus } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
 
       if (newStatus !== 'granted') {

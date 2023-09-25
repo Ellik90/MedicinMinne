@@ -32,8 +32,8 @@ export default function UserScreen({ navigation }: Props) {
       </TouchableOpacity>
 
       <FlatList
-        data={user?.medications || []} // Användarens mediciner som datakälla
-        keyExtractor={(item, index) => index.toString()} // Unika nycklar för varje medicin
+        data={user?.medications || []} 
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.medicationItem}>
             <Text>{item.name}</Text>
@@ -63,9 +63,9 @@ export default function UserScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff", // Vit bakgrundsfärg
+    backgroundColor: "#ffffff", 
     alignItems: "center",
-    justifyContent: "center", // Centrera både horisontellt och vertikalt
+    justifyContent: "center", 
   },
   welcomeText: {
     padding: 10,
@@ -74,13 +74,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   button: {
-    backgroundColor: "pink", // Bakgrundsfärg (rosa)
+    backgroundColor: "pink",
     padding: 10,
     alignItems: "center",
-    marginTop: 20, // Avstånd från föregående element
+    marginTop: 20, 
   },
   buttonText: {
-    color: "white", // Textfärg (vit)
+    color: "white", 
     fontSize: 20,
     fontWeight: "bold",
   },

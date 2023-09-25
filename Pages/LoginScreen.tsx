@@ -17,7 +17,6 @@ export default function LoginScreen({ navigation }: Props) {
     if (loggedIn) {
       navigation.navigate("Användarsidan");
     } else {
-      // Visa felmeddelande eller hantera misslyckad inloggning
       alert("Inloggningen misslyckades. Kontrollera användarnamn och lösenord.");
     }
   };

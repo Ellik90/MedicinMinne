@@ -7,16 +7,15 @@ export interface Medication {
   comment?: string;   
 }
 
-// Skapa en kontext för användaren
+
 type MedicationContextType = {
   medication: Medication | null;
-  setMedication: (medication: Medication | null) => void; // Lägg till parameter för att sätta användaren
+  setMedication: (medication: Medication | null) => void; 
 };
 
 
 const MedicationContext = createContext<MedicationContextType | undefined>(undefined);
 
-// Skapa en anpassad komponent som använder kontexten
 export const MedicationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [medication, setMedication] = useState<Medication | null>(
     {url:"", name:"", comment:""}
@@ -29,7 +28,6 @@ export const MedicationProvider: React.FC<{ children: ReactNode }> = ({ children
   );
 };
 
-// Använd en egen hook för att enkelt komma åt kontexten
 export const useMedicationContext = () => {
   const context = useContext(MedicationContext);
   if (!context) {
