@@ -16,4 +16,5 @@ Detta är en applikation för medicinminne, men react native och expo.
 ## Expo komponenter
 - Notifications
 - ImagePicker
+- Camera
 
