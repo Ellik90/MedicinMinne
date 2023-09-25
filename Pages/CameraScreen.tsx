@@ -1,14 +1,20 @@
 import React, { useState, useRef } from 'react';
 import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
+import { useMedicationContext } from '../Contexts/MedicationContext';
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "./Navigator";
 
-export default function App(): JSX.Element {
+type Props = NativeStackScreenProps<RootStackParamList, "Kamera">;
+
+export default function CameraScreen({navigation}: Props): JSX.Element {
+
+  const cameraRef = useRef<Camera | null>(null);
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
-  const cameraRef = useRef<Camera | null>(null);
   const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
-
   const [showRetakeButton, setShowRetakeButton] = useState(false);
+  const { medication, setMedication } = useMedicationContext();
 
   if (!permission) {
     return <View />;
@@ -33,14 +39,23 @@ export default function App(): JSX.Element {
       if (uri) {
         console.log(`Bild tagen: ${uri}`);
         setCapturedPhoto(uri);
-        setShowRetakeButton(true); 
+        setShowRetakeButton(true);
       }
     }
   };
 
   const handleRetakePhoto = () => {
-    setCapturedPhoto(null); 
-    setShowRetakeButton(false); 
+    setCapturedPhoto(null);
+    setShowRetakeButton(false);
+  };
+  const handleUsePhoto = () => {
+    if (capturedPhoto) {
+      setMedication({ ...medication, url: capturedPhoto });
+      console.log(capturedPhoto);
+      navigation.navigate('MedicationInfoScreen');
+    } else {
+      alert('Du valde ingen bild.');
+    }
   };
 
   return (
@@ -55,6 +70,7 @@ export default function App(): JSX.Element {
           </TouchableOpacity>
         </View>
       </Camera>
+
       {showRetakeButton && (
         <View style={styles.retakeButtonContainer}>
           <TouchableOpacity style={styles.retakeButton} onPress={handleRetakePhoto}>
@@ -62,10 +78,17 @@ export default function App(): JSX.Element {
           </TouchableOpacity>
         </View>
       )}
+
       {capturedPhoto && (
         <View style={styles.imageContainer}>
           <Image source={{ uri: capturedPhoto }} style={styles.image} />
         </View>
+      )}
+
+      {capturedPhoto && (
+        <TouchableOpacity style={styles.usePhotoButton} onPress={handleUsePhoto}>
+          <Text style={styles.text}>Använd foto</Text>
+        </TouchableOpacity>
       )}
     </View>
   );
@@ -97,7 +120,6 @@ const styles = StyleSheet.create({
   retakeButtonContainer: {
     position: 'absolute',
     bottom: 107,
-   
     left: 160,
     right: 10,
     alignItems: 'center',
@@ -124,5 +146,16 @@ const styles = StyleSheet.create({
     height: 500,
     borderRadius: 10,
   },
+  usePhotoButton: {
+    position: 'absolute',
+    bottom: 20,
+    alignSelf: 'center',
+    backgroundColor: 'white',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
+  },
 });
+
+
 
