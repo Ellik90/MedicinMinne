@@ -4,11 +4,8 @@ import FirstScreen from './FirstScreen';
 import UserScreen from './UserScreen';
 import UserImageScreen from './UserImageScreen';
 import InstallationScreen from './InstallationScreen';
-import { NavigationContainer } from '@react-navigation/native';
-import { ImageUploadProvider } from '../Contexts/ImageUploadContext';
 import MedicationInfoScreen from './MedicationInfoScreen';
 import LoginScreen from './LoginScreen';
-import medicationNotificationScreen from './MedicationNotificationScreen';
 import MedicationNotificationScreen from './MedicationNotificationScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { User, users } from '../Data';
 
-// Skapa en kontext för användaren
+
 type UserContextType = {
   user: User | null;
   setUser: (user: User | null) => void;

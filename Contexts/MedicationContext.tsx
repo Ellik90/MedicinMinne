@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-//en medicin ska ha ett klockslag och antal eller mängd
+
 export interface Medication {
   url?: string;
   name?: string;
