@@ -8,8 +8,10 @@ export default function MedicationNotificationScreen() {
   const [isDatePickerVisible, setDatePickerVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
+
   useEffect(() => {
     checkNotificationPermission();
+    
   }, []);
 
   const checkNotificationPermission = async () => {
@@ -42,16 +44,27 @@ export default function MedicationNotificationScreen() {
     const now = new Date();
     const timeDiff = date.getTime() - now.getTime();
 
+    Notifications.setNotificationHandler({
+        handleNotification: async () => ({
+            shouldShowAlert: true,
+            shouldPlaySound: true,
+            shouldSetBadge: true,
+        })
+      })
+
     await Notifications.scheduleNotificationAsync({
       content: {
         title: 'Din påminnelse',
         body: 'Det är dags att ta din medicin!',
+       
       },
       trigger: {
         seconds: timeDiff / 1000,
       },
     });
   };
+
+
 
   return (
     <View style={styles.container}>
