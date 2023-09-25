@@ -48,7 +48,7 @@ export default function MedicationNotificationScreen() {
         handleNotification: async () => ({
             shouldShowAlert: true,
             shouldPlaySound: true,
-            shouldSetBadge: true,
+            shouldSetBadge: false,
         })
       })
 
