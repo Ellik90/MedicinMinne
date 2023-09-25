@@ -18,7 +18,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "MedicationInfoScreen">;
   export default function MedicationInfoScreen({navigation}: Props) {
     const { medication, setMedication } = useMedicationContext();
     const [text, setText] = useState(medication?.name || ''); // Lokal state för texten
-    const { user, addUser } = useUserContext();
+    const { user, addUser, setUser} = useUserContext();
 
     const handleTextChange = (newText: string) => {
         setText(newText); // Uppdatera den lokala texten när användaren ändrar texten
@@ -41,7 +41,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "MedicationInfoScreen">;
         }
       
         // Uppdatera användaren med de uppdaterade medicinerna
-        addUser({ ...user, medications: updatedMedications });
+        setUser({ ...user, medications: updatedMedications });
         navigation.navigate("Användarsidan");
       };
       

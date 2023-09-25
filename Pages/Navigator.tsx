@@ -8,6 +8,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { ImageUploadProvider } from '../Contexts/ImageUploadContext';
 import MedicationInfoScreen from './MedicationInfoScreen';
 import LoginScreen from './LoginScreen';
+import medicationNotificationScreen from './MedicationNotificationScreen';
+import MedicationNotificationScreen from './MedicationNotificationScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 export type RootStackParamList = {
@@ -19,6 +21,7 @@ export type RootStackParamList = {
   Hem: undefined;
   Inloggning: undefined; 
   MedicationInfoScreen: undefined;
+  MedicationNote: undefined;
 };
 
 const Navigator: React.FC = () => {
@@ -30,6 +33,7 @@ const Navigator: React.FC = () => {
         <Stack.Screen name="Användarsidan" component={UserScreen} />
         <Stack.Screen name="Fotobibliotek" component={UserImageScreen} />
         <Stack.Screen name="MedicationInfoScreen" component={MedicationInfoScreen} />
+        <Stack.Screen name="MedicationNote" component={MedicationNotificationScreen} />
       </Stack.Navigator>
   );
 };

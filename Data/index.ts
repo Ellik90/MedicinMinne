@@ -1,5 +1,15 @@
 import { Medication } from "../Contexts/MedicationContext";
 
+// export interface FirebaseData {
+//     title?: string;
+//     message?: string;
+//     subtitle?: string;
+//     sound?: boolean | string;
+//     vibrate?: boolean | number[];
+//     priority?: AndroidNotificationPriority;
+//     badge?: number;
+//   }
+
 export interface User {
     id?: string;
     name?: string;

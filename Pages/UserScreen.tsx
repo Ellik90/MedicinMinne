@@ -1,11 +1,18 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from './Navigator';
-import { useUserContext } from '../Contexts/UserContext';
+import React from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+  Image,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "./Navigator";
+import { useUserContext } from "../Contexts/UserContext";
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Användarsidan'>;
+type Props = NativeStackScreenProps<RootStackParamList, "Användarsidan">;
 
 export default function UserScreen({ navigation }: Props) {
   const { user } = useUserContext();
@@ -18,7 +25,7 @@ export default function UserScreen({ navigation }: Props) {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          navigation.navigate('Fotobibliotek');
+          navigation.navigate("Fotobibliotek");
         }}
       >
         <Text style={styles.buttonText}>Foto från bibliotek</Text>
@@ -31,12 +38,24 @@ export default function UserScreen({ navigation }: Props) {
           <View style={styles.medicationItem}>
             <Text>{item.name}</Text>
             <Text>{item.comment}</Text>
-            {<Image source={{ uri: item.url }} style={{ width: 100, height: 100 }} />}
+            {
+              <Image
+                source={{ uri: item.url }}
+                style={{ width: 100, height: 100 }}
+              />
+            }
+              <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                // Navigera till formulärsidan och skicka med information om medicinen
+                navigation.navigate('MedicationNote');
+              }}
+            >
+              <Text style={styles.buttonText}>Ställ in påminnelse</Text>
+            </TouchableOpacity>
           </View>
         )}
       />
-
-
     </View>
   );
 }
@@ -44,33 +63,30 @@ export default function UserScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff', // Vit bakgrundsfärg
-    alignItems: 'center',
-    justifyContent: 'center', // Centrera både horisontellt och vertikalt
+    backgroundColor: "#ffffff", // Vit bakgrundsfärg
+    alignItems: "center",
+    justifyContent: "center", // Centrera både horisontellt och vertikalt
   },
   welcomeText: {
     padding: 10,
-    color: 'black',
+    color: "black",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   button: {
-    backgroundColor: 'pink', // Bakgrundsfärg (rosa)
+    backgroundColor: "pink", // Bakgrundsfärg (rosa)
     padding: 10,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 20, // Avstånd från föregående element
   },
   buttonText: {
-    color: 'white', // Textfärg (vit)
+    color: "white", // Textfärg (vit)
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   medicationItem: {
     padding: 10,
     borderBottomWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
   },
 });
-
-
-
