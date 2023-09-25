@@ -7,6 +7,7 @@ import InstallationScreen from './InstallationScreen';
 import MedicationInfoScreen from './MedicationInfoScreen';
 import LoginScreen from './LoginScreen';
 import MedicationNotificationScreen from './MedicationNotificationScreen';
+import CameraScreen from './CameraScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 export type RootStackParamList = {
@@ -19,6 +20,7 @@ export type RootStackParamList = {
   Inloggning: undefined; 
   MedicationInfoScreen: undefined;
   MedicationNote: undefined;
+  Kamera: undefined;
 };
 
 const Navigator: React.FC = () => {
@@ -31,6 +33,7 @@ const Navigator: React.FC = () => {
         <Stack.Screen name="Fotobibliotek" component={UserImageScreen} />
         <Stack.Screen name="MedicationInfoScreen" component={MedicationInfoScreen} />
         <Stack.Screen name="MedicationNote" component={MedicationNotificationScreen} />
+        <Stack.Screen name="Kamera" component={CameraScreen} />
       </Stack.Navigator>
   );
 };

@@ -21,7 +21,14 @@ export default function UserScreen({ navigation }: Props) {
     <View style={styles.container}>
       <Text style={styles.welcomeText}>Välkommen {user?.name}</Text>
       <Text></Text>
-
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          navigation.navigate("Kamera");
+        }}
+      >
+        <Text style={styles.buttonText}>Kamera</Text>
+      </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
