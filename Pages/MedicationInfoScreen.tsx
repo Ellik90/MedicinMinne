@@ -21,7 +21,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "MedicationInfoScreen">;
 
     const handleTextChange = (newText: string) => {
         setText(newText); 
-        setMedication({ ...medication, name: newText, comment: newText });
+        setMedication({ ...medication,id:medication?.id, name: newText, comment: newText });
       };
 
         

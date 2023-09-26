@@ -60,8 +60,9 @@ export default function UserScreen({ navigation }: Props) {
               <TouchableOpacity
               style={styles.button}
               onPress={() => {
-                // Navigera till formulärsidan och skicka med information om medicinen
-                navigation.navigate('MedicationNote');
+                if(item.id){
+                  navigation.navigate('MedicationNote', {id:item.id});
+                }
               }}
             >
               <Text style={styles.buttonText}>Ställ in påminnelse</Text>

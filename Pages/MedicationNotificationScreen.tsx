@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "./Navigator";
+import { useUserContext } from "../Contexts/UserContext";
+import { RouteProp, useRoute } from "@react-navigation/native";
+
+type Props = RouteProp<RootStackParamList, "MedicationNote">;
 
 export default function MedicationNotificationScreen() {
   const [isDatePickerVisible, setDatePickerVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const { user } = useUserContext();
+  const route = useRoute<Props>();
+  const { id } = route.params;
+  const medication = user?.medications?.find((m) => m.id === id);
 
 
   useEffect(() => {
@@ -40,6 +50,11 @@ export default function MedicationNotificationScreen() {
     scheduleNotification(date);
   };
 
+  let notificationBody = 'Det är dags att ta din medicin!';
+  if (medication) {
+    notificationBody = `Nu är det dags att ta ${medication.name}`; // Lägg till din logik för att visa bilden här
+  }
+
   const scheduleNotification = async (date: Date) => {
     const now = new Date();
     const timeDiff = date.getTime() - now.getTime();
@@ -54,8 +69,8 @@ export default function MedicationNotificationScreen() {
 
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Din påminnelse',
-        body: 'Det är dags att ta din medicin!',
+        title: "Medicinpåminnelse",
+        body: notificationBody,
        
       },
       trigger: {
@@ -81,9 +96,12 @@ export default function MedicationNotificationScreen() {
       />
 
       {selectedDate && (
+        <View style={{flex:1, flexDirection:"column"}}>
         <Text style={styles.notificationText}>
           Notis schemalagd för {selectedDate.toString()}
         </Text>
+        <Image source={{ uri: medication?.url }} style={{height:100, width:100}} />
+        </View>
       )}
     </View>
   );

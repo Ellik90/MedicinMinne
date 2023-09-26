@@ -21,7 +21,7 @@ const MedicationContext = createContext<MedicationContextType | undefined>(undef
 
 export const MedicationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [medication, setMedication] = useState<Medication | null>(
-    {url:"", name:"", comment:""}
+    {id:"",url:"", name:"", comment:""}
   );
 
    function addMedication(medication: Medication){

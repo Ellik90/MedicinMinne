@@ -19,7 +19,7 @@ export type RootStackParamList = {
   Hem: undefined;
   Inloggning: undefined; 
   MedicationInfoScreen: undefined;
-  MedicationNote: undefined;
+  MedicationNote: {id:string};
   Kamera: undefined;
 };
 
