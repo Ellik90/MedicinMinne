@@ -52,7 +52,7 @@ export default function MedicationNotificationScreen() {
 
   let notificationBody = 'Det är dags att ta din medicin!';
   if (medication) {
-    notificationBody = `Nu är det dags att ta ${medication.name}`; // Lägg till din logik för att visa bilden här
+    notificationBody = `Dags att ta ${medication.time} medicinen ${medication.name}`; // Lägg till din logik för att visa bilden här
   }
 
   const scheduleNotification = async (date: Date) => {
@@ -100,6 +100,10 @@ export default function MedicationNotificationScreen() {
         <Text style={styles.notificationText}>
           Notis schemalagd för {selectedDate.toString()}
         </Text>
+        <Text>{medication?.name}</Text>
+        <Text>{medication?.dose}</Text>
+        <Text>{medication?.time}</Text>
+        <Text>{medication?.comment}</Text>
         <Image source={{ uri: medication?.url }} style={{height:100, width:100}} />
         </View>
       )}

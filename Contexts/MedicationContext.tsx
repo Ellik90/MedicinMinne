@@ -1,11 +1,14 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { Timespan } from 'react-native/Libraries/Utilities/IPerformanceLogger';
 
 
 export interface Medication {
     id?: string;
   url?: string;
   name?: string;
-  comment?: string;   
+  comment?: string;
+  dose?: string;
+  time?: string;    
 }
 
 
@@ -21,7 +24,7 @@ const MedicationContext = createContext<MedicationContextType | undefined>(undef
 
 export const MedicationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [medication, setMedication] = useState<Medication | null>(
-    {id:"",url:"", name:"", comment:""}
+    {id:"", url:"", name:"", comment:"", dose: "", time: "" }
   );
 
    function addMedication(medication: Medication){

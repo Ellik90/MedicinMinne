@@ -1,67 +1,90 @@
-
-interface Medication {
-    name: string;
-    url?: string | undefined; 
-    comment?: string | undefined;
-  }
-
-  import React, { useState } from "react";
-  import { View, TextInput, Text, Image, Button } from "react-native";
-  import { useMedicationContext } from "../Contexts/MedicationContext";
+import React, { useState } from "react";
+import { View, TextInput, Text, Image, Button } from "react-native";
+import { useMedicationContext } from "../Contexts/MedicationContext";
 import { useUserContext } from "../Contexts/UserContext";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "./Navigator";
 
 type Props = NativeStackScreenProps<RootStackParamList, "MedicationInfoScreen">;
 
-  export default function MedicationInfoScreen({navigation}: Props) {
-    const { medication, setMedication } = useMedicationContext();
-    const [text, setText] = useState(medication?.name || ''); // Lokal state för texten
-    const { user, addUser, setUser} = useUserContext();
+interface Medication {
+  name: string;
+  dose?: string | undefined;
+  time?: string | undefined;
+  comment?: string | undefined;
+  url?: string | undefined;
+}
 
-    const handleTextChange = (newText: string) => {
-        setText(newText); 
-        setMedication({ ...medication,id:medication?.id, name: newText, comment: newText });
-      };
+export default function MedicationInfoScreen({ navigation }: Props) {
+  const { medication, setMedication } = useMedicationContext();
+  const [name, setName] = useState(medication?.name || '');
+  const [dose, setDose] = useState(medication?.dose || '');
+  const [time, setTime] = useState(medication?.time || '');
+  const [comment, setComment] = useState(medication?.comment || '');
+  const { user, setUser } = useUserContext();
 
-        
-      const saveMedicationToUser = () => {
-        const updatedMedications = user?.medications ? [...user.medications] : [];
-      
- 
-        if (medication) {
-          console.log(updatedMedications);
-          updatedMedications.push(medication);
-        }
-      
-        
-        setUser({ ...user, medications: updatedMedications });
-        navigation.navigate("Användarsidan");
-      };
-      
-      
-    return (
-      <View>
-        <Text>Medication Name:</Text>
-        
-        <TextInput
-          onChangeText={handleTextChange}
-          value={text}
-          placeholder="Namn"
-        />
-    <TextInput
-          onChangeText={handleTextChange}
-          value={text}
-          placeholder="Kommentar"
-        />
+  const handleNameChange = (newName: string) => {
+    setName(newName);
+    setMedication({ ...medication, name: newName });
+  };
 
-        {/* <Text>{medication?.comment}</Text>
-        {medication?.url && (
+  const handleDoseChange = (newDose: string) => {
+    setDose(newDose);
+    setMedication({ ...medication, dose: newDose });
+  };
+
+  const handleTimeChange = (newTime: string) => {
+    setTime(newTime);
+    setMedication({ ...medication, time: newTime });
+  };
+
+  const handleCommentChange = (newComment: string) => {
+    setComment(newComment);
+    setMedication({ ...medication, comment: newComment });
+  };
+
+  const saveMedicationToUser = () => {
+    const updatedMedications = user?.medications ? [...user.medications] : [];
+
+    if (medication) {
+      updatedMedications.push(medication);
+    }
+
+    setUser({ ...user, medications: updatedMedications });
+    navigation.navigate("Användarsidan");
+  };
+
+  return (
+    <View>
+      <Text>Medication Name:</Text>
+      <TextInput
+        onChangeText={handleNameChange}
+        value={name}
+        placeholder="Namn"
+      />
+      <TextInput
+        onChangeText={handleDoseChange}
+        value={dose}
+        placeholder="Dos"
+      />
+      <TextInput
+        onChangeText={handleTimeChange}
+        value={time}
+        placeholder="Klockslag"
+      />
+      <TextInput
+        onChangeText={handleCommentChange}
+        value={comment}
+        placeholder="Kommentar"
+      />
+
+      {/* <Text>{comment}</Text> */}
+      {medication?.url && (
         <Image source={{ uri: medication.url }} style={{ width: 100, height: 100 }} />
-      )} */}
+      )}
 
       <Button title="Spara medicin" onPress={saveMedicationToUser}></Button>
-      </View>
-    );
-  }
+    </View>
+  );
+}
   
