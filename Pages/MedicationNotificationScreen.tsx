@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image} from "react-native";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "./Navigator";
 import { useUserContext } from "../Contexts/UserContext";
 import { RouteProp, useRoute } from "@react-navigation/native";
+import { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+
+import DateTimePicker from '@react-native-community/datetimepicker'; // Importera DateTimePicker från community-paketet
 
 type Props = RouteProp<RootStackParamList, "MedicationNote">;
 
 export default function MedicationNotificationScreen() {
-  const [isDatePickerVisible, setDatePickerVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [isDatePickerVisible, setDatePickerVisible] = useState(false); // Lägg till state för att hantera synlighet av DateTimePicker
   const { user } = useUserContext();
   const route = useRoute<Props>();
   const { id } = route.params;
   const medication = user?.medications?.find((m) => m.id === id);
 
-
   useEffect(() => {
     checkNotificationPermission();
-    
   }, []);
 
   const checkNotificationPermission = async () => {
@@ -36,18 +36,17 @@ export default function MedicationNotificationScreen() {
     }
   };
 
-  const showDatePicker = () => {
-    setDatePickerVisible(true);
+  const handleDateChange = (event: DateTimePickerEvent, date?: Date) => {
+    if (date) {
+      setSelectedDate(date);
+    }
   };
 
-  const hideDatePicker = () => {
-    setDatePickerVisible(false);
-  };
-
-  const handleConfirm = (date: Date) => {
-    setSelectedDate(date);
-    hideDatePicker();
-    scheduleNotification(date);
+  const handleConfirmNotification = () => {
+    if (selectedDate) {
+      scheduleNotification(selectedDate);
+      setDatePickerVisible(false); // Stäng DateTimePicker när notisen bekräftas
+    }
   };
 
   let notificationBody = 'Det är dags att ta din medicin!';
@@ -60,18 +59,17 @@ export default function MedicationNotificationScreen() {
     const timeDiff = date.getTime() - now.getTime();
 
     Notifications.setNotificationHandler({
-        handleNotification: async () => ({
-            shouldShowAlert: true,
-            shouldPlaySound: true,
-            shouldSetBadge: false,
-        })
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
       })
+    })
 
     await Notifications.scheduleNotificationAsync({
       content: {
         title: "Medicinpåminnelse",
         body: notificationBody,
-       
       },
       trigger: {
         seconds: timeDiff / 1000,
@@ -79,34 +77,50 @@ export default function MedicationNotificationScreen() {
     });
   };
 
-
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Välj tid för alarm</Text>
-      <TouchableOpacity style={styles.button} onPress={showDatePicker}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => setDatePickerVisible(true)} // Visa DateTimePicker när knappen trycks
+      >
         <Text style={styles.buttonText}>Öppna DateTime-picker</Text>
       </TouchableOpacity>
 
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="datetime"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-      />
+      {/* Använd DateTimePicker för att välja tid */}
+      {isDatePickerVisible && (
+        <DateTimePicker
+          value={selectedDate || new Date()} // Defaultvärde är nuvarande tid om selectedDate är null
+          mode="datetime"
+          display="spinner"
+          onChange={handleDateChange}
+        />
+      )}
 
       {selectedDate && (
-        <View style={{flex:1, flexDirection:"column"}}>
-        <Text style={styles.notificationText}>
-          Notis schemalagd för {selectedDate.toString()}
-        </Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleConfirmNotification} // Anropa funktionen när användaren bekräftar notisen
+        >
+          <Text>Bekräfta tid och schemalägg påminnelse</Text>
+        </TouchableOpacity>
+      )}
+
+      <View style={{ flex: 1, flexDirection: "column" }}>
+        {selectedDate && (
+          <Text style={styles.notificationText}>
+            Notis schemalagd för {selectedDate?.toString()}
+          </Text>)}
+
         <Text>{medication?.name}</Text>
         <Text>{medication?.dose}</Text>
         <Text>{medication?.time}</Text>
         <Text>{medication?.comment}</Text>
-        <Image source={{ uri: medication?.url }} style={{height:100, width:100}} />
-        </View>
-      )}
+        <Image
+          source={{ uri: medication?.url }}
+          style={{ height: 100, width: 100 }}
+        />
+      </View>
     </View>
   );
 }
@@ -138,9 +152,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 });
-
-
-
 
 
 {
