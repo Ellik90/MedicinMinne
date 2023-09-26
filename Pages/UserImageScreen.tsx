@@ -18,11 +18,11 @@ type Props = NativeStackScreenProps<RootStackParamList, "Fotobibliotek">;
 
 export default function UserImageScreen({ navigation }: Props) {
   const { selectedImage, setSelectedImage } = useImageUpload();
-  const { medication, setMedication } = useMedicationContext();
+  const { medication, addMedication } = useMedicationContext();
 
   const selectImage = async () => {
     if (selectedImage) {
-      setMedication({ ...medication, url: selectedImage});
+      addMedication({ ...medication, url: selectedImage});
       console.log(selectedImage);
       navigation.navigate("MedicationInfoScreen");
     } else {

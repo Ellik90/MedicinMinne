@@ -14,7 +14,7 @@ export default function CameraScreen({navigation}: Props): JSX.Element {
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
   const [showRetakeButton, setShowRetakeButton] = useState(false);
-  const { medication, setMedication } = useMedicationContext();
+  const { medication, addMedication } = useMedicationContext();
 
   if (!permission) {
     return <View />;
@@ -50,7 +50,7 @@ export default function CameraScreen({navigation}: Props): JSX.Element {
   };
   const handleUsePhoto = () => {
     if (capturedPhoto) {
-      setMedication({ ...medication, url: capturedPhoto });
+        addMedication({ ...medication, url: capturedPhoto});
       console.log(capturedPhoto);
       navigation.navigate('MedicationInfoScreen');
     } else {

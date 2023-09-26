@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 
 export interface Medication {
+    id?: string;
   url?: string;
   name?: string;
   comment?: string;   
@@ -11,6 +12,8 @@ export interface Medication {
 type MedicationContextType = {
   medication: Medication | null;
   setMedication: (medication: Medication | null) => void; 
+  addMedication: (medication: Medication) => void; 
+  
 };
 
 
@@ -21,8 +24,18 @@ export const MedicationProvider: React.FC<{ children: ReactNode }> = ({ children
     {url:"", name:"", comment:""}
   );
 
+   function addMedication(medication: Medication){
+    const milliseconds = Date.now().toString();
+    const id = milliseconds.slice(-4);
+    medication.id = id;
+    setMedication({...medication, id: medication.id});
+    console.log(medication)
+   }
+
+
+
   return (
-    <MedicationContext.Provider value={{ medication, setMedication }}>
+    <MedicationContext.Provider value={{ medication, setMedication, addMedication }}>
       {children}
     </MedicationContext.Provider>
   );

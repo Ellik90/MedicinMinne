@@ -17,6 +17,12 @@ type Props = NativeStackScreenProps<RootStackParamList, "Användarsidan">;
 export default function UserScreen({ navigation }: Props) {
   const { user } = useUserContext();
 
+  if (user && user.medications) {
+    user.medications.forEach((medication, index) => {
+      console.log(`Medicin ${index + 1}: ID: ${medication.id}, Namn: ${medication.name}`);
+    });
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.welcomeText}>Välkommen {user?.name}</Text>

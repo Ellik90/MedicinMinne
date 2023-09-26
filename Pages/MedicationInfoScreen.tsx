@@ -30,12 +30,8 @@ type Props = NativeStackScreenProps<RootStackParamList, "MedicationInfoScreen">;
       
  
         if (medication) {
-          const newMedicin: Medication = {
-            name: medication.name || "",
-            url: medication.url || "", 
-            comment: medication.comment || "", 
-          };
-          updatedMedications.push(newMedicin);
+          console.log(updatedMedications);
+          updatedMedications.push(medication);
         }
       
         
