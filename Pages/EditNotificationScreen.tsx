@@ -2,54 +2,50 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "./Navigator";
+import { useUserContext } from "../Contexts/UserContext";
 import { useNotificationContext } from "../Contexts/NotificationContext";
 import { useNavigation } from "@react-navigation/native";
 import * as Notifications from 'expo-notifications';
 
-type Props = NativeStackScreenProps<RootStackParamList, "Notiser">;
+type Props = NativeStackScreenProps<RootStackParamList, "Redigera">;
 
-export default function ActiveNotificationListScreen({ navigation }: Props) {
-  const { notifications } = useNotificationContext();
+export default function EditNotificationScreen({ navigation }: Props) {
+  const { userLogIn } = useUserContext();
+  const [loginName, setLoginName] = useState("");
+  const [passWord, setPassWord] = useState("");
+  const { notifications, selectedDate, editNotification, deleteNotification } = useNotificationContext();
   const { navigate } = useNavigation();
-  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     getDeviceNotifications();
-  }, [refresh]);
-
-  const handleEditNotification = (notificationId: string) => {
-    navigation.navigate("Redigera");
-  };
-  
+  }, []);
 
   const getDeviceNotifications = async () => {
     try {
-      const deviceNotifications = await Notifications.getAllScheduledNotificationsAsync();
-      setRefresh(!refresh);
+      const notifications = await Notifications.getAllScheduledNotificationsAsync();
     } catch (error) {
       console.error("Fel vid hämtning av notiser:", error);
     }
   };
 
-  const removeAllDeviceNotifications = async () => {
+  const handleEditNotification = (notificationId: string) => {
+    // ...
+  };
+
+  const handleDeleteNotification = async (notificationId: string) => {
     try {
-      await Notifications.cancelAllScheduledNotificationsAsync();
-      // Uppdatera komponenten för att visa att notiserna har tagits bort
-      setRefresh(!refresh);
+      deleteNotification(notificationId);
+
+      await Notifications.dismissNotificationAsync(notificationId);
     } catch (error) {
-      console.error("Fel vid borttagning av notiser:", error);
+      console.error("Fel vid borttagning av notis:", error);
     }
   };
-  
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={removeAllDeviceNotifications}>
-        <Text>Radera alla notiser från enheten</Text>
-      </TouchableOpacity>
       <FlatList
         data={notifications || []}
-        extraData={refresh}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.medicationItem}>
@@ -64,6 +60,9 @@ export default function ActiveNotificationListScreen({ navigation }: Props) {
             <Text>Valt datum: {item.selectedDate?.toString()}</Text>
             <TouchableOpacity onPress={() => handleEditNotification(item.id)}>
               <Text>Redigera</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleDeleteNotification(item.id)}>
+              <Text>Radera</Text>
             </TouchableOpacity>
           </View>
         )}
