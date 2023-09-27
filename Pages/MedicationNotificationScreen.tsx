@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image, TextInput, Button } from "react-native";
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import { RootStackParamList } from "./Navigator";
@@ -7,6 +7,7 @@ import { useUserContext } from "../Contexts/UserContext";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
+import { useNotificationContext } from '../Contexts/NotificationContext';
 
 import DateTimePicker from '@react-native-community/datetimepicker'; 
 
@@ -17,10 +18,12 @@ export default function MedicationNotificationScreen() {
   const [isDatePickerVisible, setDatePickerVisible] = useState(false);
   const [repetition, setRepetition] = useState("Dagligen");
   const [showRepetitionPicker, setShowRepetitionPicker] = useState(false); 
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
   const route = useRoute<Props>();
   const { id } = route.params;
   const medication = user?.medications?.find((m) => m.id === id);
+  const { addNotification } = useNotificationContext();
+  const [notificationText, setNotificationText] = useState('');
 
   useEffect(() => {
     checkNotificationPermission();
@@ -44,13 +47,43 @@ export default function MedicationNotificationScreen() {
     }
   };
 
+
   const handleConfirmNotification = () => {
     if (selectedDate) {
-      scheduleNotification(selectedDate, repetition); 
-      setDatePickerVisible(false); 
-      setShowRepetitionPicker(false); 
+      scheduleNotification(selectedDate, repetition);
+      setDatePickerVisible(false);
+      setShowRepetitionPicker(false);
+  
+      const newNotification = {
+        id: medication?.id || '', // Använd medicinens id som notisens id
+        url: medication?.url || '',
+        name: medication?.name || '',
+        comment: medication?.comment || '',
+        dose: medication?.dose || '',
+        time: medication?.time || '',
+      };
+
+      addNotification(newNotification);
+  
+      // // Lägg till den nya notisen i användarens notislista
+      // if (user) {
+      //   // user?.notifiCations?.push(newNotification)
+      //   const updatedNotifications = [{...user.notifiCations, newNotification}];
+      //   setUser({ ...user, notifiCations: updatedNotifications });
+      // }
+  
     }
   };
+
+ 
+
+  // const handleConfirmNotification = () => {
+  //   if (selectedDate) {
+  //     scheduleNotification(selectedDate, repetition); 
+  //     setDatePickerVisible(false); 
+  //     setShowRepetitionPicker(false); 
+  //   }
+  // };
 
   const repetitionOptions = ["Dagligen", "Varannan dag", "Veckovis", "Månadsvis", "Varje minut"];
 
@@ -145,6 +178,7 @@ export default function MedicationNotificationScreen() {
         <TouchableOpacity
           style={styles.button}
           onPress={handleConfirmNotification} 
+          
         >
           <Text>Bekräfta tid och schemalägg påminnelse</Text>
         </TouchableOpacity>
@@ -165,6 +199,13 @@ export default function MedicationNotificationScreen() {
           style={{ height: 100, width: 100 }}
         />
       </View>
+     
+      <TextInput
+        placeholder="Skriv din notifikation"
+        value={notificationText}
+        onChangeText={setNotificationText}
+      />
+   
     </View>
   );
 }

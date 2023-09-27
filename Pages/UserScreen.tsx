@@ -11,11 +11,14 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "./Navigator";
 import { useUserContext } from "../Contexts/UserContext";
+import { useMedicationContext } from "../Contexts/MedicationContext";
+import { useNotificationContext } from "../Contexts/NotificationContext";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Användarsidan">;
 
 export default function UserScreen({ navigation }: Props) {
   const { user } = useUserContext();
+  const { notifications } = useNotificationContext();
 
   if (user && user.medications) {
     user.medications.forEach((medication, index) => {
@@ -70,6 +73,17 @@ export default function UserScreen({ navigation }: Props) {
           </View>
         )}
       />
+
+      
+<FlatList
+        data={notifications || []} 
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.medicationItem}>
+            <Text>{item.name}</Text>
+            </View>
+            )}
+            />
     </View>
   );
 }

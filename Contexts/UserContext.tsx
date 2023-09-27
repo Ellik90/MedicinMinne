@@ -7,13 +7,15 @@ type UserContextType = {
   setUser: (user: User | null) => void;
   userLogIn: (password: string, username:string) => boolean;
   addUser: (user: User | null) => void;
-};
+  };
+  //en metod som lägger till en medication till listan 
+
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>({id:"", name:"", medications:[]});
+  const [user, setUser] = useState<User | null>({id:"", name:"", medications:[], notifiCations:[]});
 
   function userLogIn(password:string, username: string){
     const userFound = users.find(u => u.password == password && u.username == username);

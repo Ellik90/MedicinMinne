@@ -1,6 +1,6 @@
 MedicinMinnesAppen // MMA
 
-Detta är en applikation för medicinminne, men react native och expo.
+Detta är en applikation för medicinminne, med react native och expo.
 
 ## React-native komponenter 
 - View
@@ -17,4 +17,5 @@ Detta är en applikation för medicinminne, men react native och expo.
 - Notifications
 - ImagePicker
 - Camera
+- Picker
 
