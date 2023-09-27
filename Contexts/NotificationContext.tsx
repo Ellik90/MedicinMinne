@@ -7,9 +7,11 @@ type Notification = {
   comment: string;
   dose: string;
   time: string;
+  selectedDate: Date;
 };
 
 type NotificationContextType = {
+  selectedDate: Date | null; 
   notifications: Notification[];
   addNotification: (notification: Notification) => void;
 };
@@ -17,15 +19,18 @@ type NotificationContextType = {
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   const addNotification = (notification: Notification) => {
     setNotifications([...notifications, notification]);
+    setSelectedDate(notification.selectedDate); 
     // setUser({ ...user, notifiCations: updatedNotifications });
+    
   };
 
   return (
-    <NotificationContext.Provider value={{ notifications, addNotification }}>
+    <NotificationContext.Provider value={{selectedDate, notifications, addNotification }}>
       {children}
     </NotificationContext.Provider>
   );

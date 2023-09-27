@@ -55,15 +55,18 @@ export default function MedicationNotificationScreen() {
       setShowRepetitionPicker(false);
   
       const newNotification = {
-        id: medication?.id || '', // Använd medicinens id som notisens id
+        id: medication?.id || '', 
         url: medication?.url || '',
         name: medication?.name || '',
         comment: medication?.comment || '',
         dose: medication?.dose || '',
         time: medication?.time || '',
+        selectedDate: selectedDate,
       };
 
       addNotification(newNotification);
+      
+      
   
       // // Lägg till den nya notisen i användarens notislista
       // if (user) {
@@ -200,11 +203,11 @@ export default function MedicationNotificationScreen() {
         />
       </View>
      
-      <TextInput
+      {/* <TextInput
         placeholder="Skriv din notifikation"
         value={notificationText}
         onChangeText={setNotificationText}
-      />
+      /> */}
    
     </View>
   );

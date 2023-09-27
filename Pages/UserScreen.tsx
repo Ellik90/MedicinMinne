@@ -46,6 +46,14 @@ export default function UserScreen({ navigation }: Props) {
       >
         <Text style={styles.buttonText}>Foto från bibliotek</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          navigation.navigate("Notiser");
+        }}
+      >
+        <Text style={styles.buttonText}>Mina Notiser</Text>
+      </TouchableOpacity>
 
       <FlatList
         data={user?.medications || []} 
@@ -75,7 +83,7 @@ export default function UserScreen({ navigation }: Props) {
       />
 
       
-<FlatList
+{/* <FlatList
         data={notifications || []} 
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
@@ -83,7 +91,7 @@ export default function UserScreen({ navigation }: Props) {
             <Text>{item.name}</Text>
             </View>
             )}
-            />
+            /> */}
     </View>
   );
 }
