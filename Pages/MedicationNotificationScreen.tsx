@@ -151,6 +151,10 @@ export default function MedicationNotificationScreen() {
       setNotificationId(null); // Återställ notis-ID
     }
   };
+  const cancelAllScheduledNotifications = async () => {
+    await Notifications.cancelAllScheduledNotificationsAsync();
+  };
+
 
   return (
     <View style={styles.container}>
@@ -208,7 +212,14 @@ export default function MedicationNotificationScreen() {
         >
           <Text>Radera notis</Text>
         </TouchableOpacity>
+        
       )}
+        <TouchableOpacity
+          style={styles.button}
+          onPress={cancelAllScheduledNotifications}
+        >
+          <Text>Radera alla notiser</Text>
+        </TouchableOpacity>
 
       <View style={{ flex: 1, flexDirection: "column" }}>
         {selectedDate && (
