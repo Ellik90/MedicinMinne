@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image, TextInput, Button } from "react-native";
-import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  TextInput,
+  Button,
+} from "react-native";
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
 import { RootStackParamList } from "./Navigator";
 import { useUserContext } from "../Contexts/UserContext";
 import { RouteProp, useRoute } from "@react-navigation/native";
-import { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { Picker } from '@react-native-picker/picker';
-import { useNotificationContext } from '../Contexts/NotificationContext';
+import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import { Picker } from "@react-native-picker/picker";
+import {
+  NotificationModal,
+  useNotificationContext,
+} from "../Contexts/NotificationContext";
 
-import DateTimePicker from '@react-native-community/datetimepicker'; 
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 type Props = RouteProp<RootStackParamList, "MedicationNote">;
 
@@ -17,13 +28,17 @@ export default function MedicationNotificationScreen() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isDatePickerVisible, setDatePickerVisible] = useState(false);
   const [repetition, setRepetition] = useState("Dagligen");
-  const [showRepetitionPicker, setShowRepetitionPicker] = useState(false); 
+  const [showRepetitionPicker, setShowRepetitionPicker] = useState(false);
   const { user, setUser } = useUserContext();
   const route = useRoute<Props>();
   const { id } = route.params;
   const medication = user?.medications?.find((m) => m.id === id);
-  const { addNotification } = useNotificationContext();
-  const [notificationText, setNotificationText] = useState('');
+  const { addNotificationToUser } = useUserContext();
+  const [notificationText, setNotificationText] = useState("");
+  const [notificationId, setNotificationId] = useState<string | null>(null); // Håll reda på notisens ID
+  const [repeatInterval, setRepeatInterval] = useState<number | undefined>(
+    undefined
+  ); // Deklarera repeatInterval och setRepeatInterval
 
   useEffect(() => {
     checkNotificationPermission();
@@ -32,11 +47,13 @@ export default function MedicationNotificationScreen() {
   const checkNotificationPermission = async () => {
     const { status } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
 
-    if (status !== 'granted') {
-      const { status: newStatus } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+    if (status !== "granted") {
+      const { status: newStatus } = await Permissions.askAsync(
+        Permissions.NOTIFICATIONS
+      );
 
-      if (newStatus !== 'granted') {
-        console.log('Användaren har nekat tillstånd för notiser');
+      if (newStatus !== "granted") {
+        console.log("Användaren har nekat tillstånd för notiser");
       }
     }
   };
@@ -47,52 +64,38 @@ export default function MedicationNotificationScreen() {
     }
   };
 
-
-  const handleConfirmNotification = () => {
+  const handleConfirmNotification = async () => {
     if (selectedDate) {
-      scheduleNotification(selectedDate, repetition);
+      await scheduleNotification(selectedDate, repetition);
       setDatePickerVisible(false);
       setShowRepetitionPicker(false);
-  
-      const newNotification = {
-        id: medication?.id || '', 
-        url: medication?.url || '',
-        name: medication?.name || '',
-        comment: medication?.comment || '',
-        dose: medication?.dose || '',
-        time: medication?.time || '',
+
+      const newNotification: NotificationModal = {
+        id: medication?.id || "",
+        url: medication?.url || "",
+        name: medication?.name || "",
+        comment: medication?.comment || "",
+        dose: medication?.dose || "",
+        time: medication?.time || "",
         selectedDate: selectedDate,
       };
 
-      addNotification(newNotification);
-      
-      
-  
-      // // Lägg till den nya notisen i användarens notislista
-      // if (user) {
-      //   // user?.notifiCations?.push(newNotification)
-      //   const updatedNotifications = [{...user.notifiCations, newNotification}];
-      //   setUser({ ...user, notifiCations: updatedNotifications });
-      // }
-  
+      addNotificationToUser(newNotification);
     }
   };
 
- 
+  const repetitionOptions = [
+    "Dagligen",
+    "Varannan dag",
+    "Veckovis",
+    "Månadsvis",
+    "Varje minut",
+    "var femte sekund",
+  ];
 
-  // const handleConfirmNotification = () => {
-  //   if (selectedDate) {
-  //     scheduleNotification(selectedDate, repetition); 
-  //     setDatePickerVisible(false); 
-  //     setShowRepetitionPicker(false); 
-  //   }
-  // };
-
-  const repetitionOptions = ["Dagligen", "Varannan dag", "Veckovis", "Månadsvis", "Varje minut"];
-
-  let notificationBody = 'Det är dags att ta din medicin!';
+  let notificationBody = "Det är dags att ta din medicin!";
   if (medication) {
-    notificationBody = `Dags att ta ${medication.time} medicinen ${medication.name}`; 
+    notificationBody = `Dags att ta ${medication.time} medicinen ${medication.name}`;
   }
 
   const scheduleNotification = async (date: Date, repetition: string) => {
@@ -104,37 +107,49 @@ export default function MedicationNotificationScreen() {
         shouldShowAlert: true,
         shouldPlaySound: true,
         shouldSetBadge: false,
-      })
+      }),
     });
 
     let repeatInterval = 0;
 
-  if (repetition === "Dagligen") {
-    repeatInterval = 24 * 60 * 60 * 1000; 
-  } else if (repetition === "Varannan dag") {
-    repeatInterval = 48 * 60 * 60 * 1000; 
-  } else if (repetition === "Veckovis") {
-    repeatInterval = 7 * 24 * 60 * 60 * 1000; 
-  } else if (repetition === "Månadsvis") {
- 
-  } else if (repetition === "Varje minut") {
-    repeatInterval = 60 * 1000; 
-  }
-    
+    if (repetition === "Dagligen") {
+      repeatInterval = 24 * 60 * 60 * 1000;
+    } else if (repetition === "Varannan dag") {
+      repeatInterval = 48 * 60 * 60 * 1000;
+    } else if (repetition === "Veckovis") {
+      repeatInterval = 7 * 24 * 60 * 60 * 1000;
+    } else if (repetition === "Månadsvis") {
+      // Lägg till kod här för att hantera månadsvis repetition
+    } else if (repetition === "Varje minut") {
+      repeatInterval = 60 * 1000;
+    } else if (repetition === "var femte sekund") {
+      repeatInterval = 5 * 1000;
+    }
 
-    const scheduleNotification = () => {
-      Notifications.scheduleNotificationAsync({
-        content: {
-          title: "Medicinpåminnelse",
-          body: notificationBody,
-        },
-        trigger: null, 
-      });
-  
-      setTimeout(scheduleNotification, repeatInterval);
-    };
-  
-    setTimeout(scheduleNotification, timeDiff);
+    // Beräkna när notisen ska visas för första gången
+    const firstNotificationTime = new Date(date.getTime() - timeDiff);
+
+    // Schemalägg notisen och spara notis-ID
+    const notificationId = await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Medicinpåminnelse",
+        body: notificationBody,
+      },
+      trigger: {
+        seconds: repeatInterval / 1000,
+        repeats: repeatInterval > 0,
+      },
+    });
+
+    // Använd notis-ID för att spara notisen i state eller databas
+    setNotificationId(notificationId);
+  };
+
+  const cancelScheduledNotification = async () => {
+    if (notificationId) {
+      await Notifications.cancelScheduledNotificationAsync(notificationId);
+      setNotificationId(null); // Återställ notis-ID
+    }
   };
 
   return (
@@ -142,14 +157,14 @@ export default function MedicationNotificationScreen() {
       <Text style={styles.title}>Välj tid för alarm</Text>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => setDatePickerVisible(true)} 
+        onPress={() => setDatePickerVisible(true)}
       >
         <Text style={styles.buttonText}>Öppna DateTime-picker</Text>
       </TouchableOpacity>
 
       {isDatePickerVisible && (
         <DateTimePicker
-          value={selectedDate || new Date()} 
+          value={selectedDate || new Date()}
           mode="datetime"
           display="spinner"
           onChange={handleDateChange}
@@ -158,7 +173,7 @@ export default function MedicationNotificationScreen() {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => setShowRepetitionPicker(!showRepetitionPicker)} 
+        onPress={() => setShowRepetitionPicker(!showRepetitionPicker)}
       >
         <Text style={styles.buttonText}>
           {showRepetitionPicker ? "Dölj Repetition" : "Visa Repetition"}
@@ -180,10 +195,18 @@ export default function MedicationNotificationScreen() {
       {selectedDate && (
         <TouchableOpacity
           style={styles.button}
-          onPress={handleConfirmNotification} 
-          
+          onPress={handleConfirmNotification}
         >
           <Text>Bekräfta tid och schemalägg påminnelse</Text>
+        </TouchableOpacity>
+      )}
+
+      {notificationId && (
+        <TouchableOpacity
+          style={styles.button}
+          onPress={cancelScheduledNotification}
+        >
+          <Text>Radera notis</Text>
         </TouchableOpacity>
       )}
 
@@ -191,7 +214,8 @@ export default function MedicationNotificationScreen() {
         {selectedDate && (
           <Text style={styles.notificationText}>
             Notis schemalagd för {selectedDate?.toString()}
-          </Text>)}
+          </Text>
+        )}
 
         <Text>{medication?.name}</Text>
         <Text>{medication?.dose}</Text>
@@ -202,13 +226,6 @@ export default function MedicationNotificationScreen() {
           style={{ height: 100, width: 100 }}
         />
       </View>
-     
-      {/* <TextInput
-        placeholder="Skriv din notifikation"
-        value={notificationText}
-        onChangeText={setNotificationText}
-      /> */}
-   
     </View>
   );
 }
@@ -243,15 +260,3 @@ const styles = StyleSheet.create({
     width: 200,
   },
 });
-
-
-
-{
-  /* <Text style={styles.title}>Fyll i tid för alarm</Text>
-<TouchableOpacity
-  style={styles.button}
- 
->
-  <Text style={styles.buttonText}>Bekräfta notification</Text>
-</TouchableOpacity> */
-}

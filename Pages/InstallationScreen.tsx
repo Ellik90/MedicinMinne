@@ -19,24 +19,17 @@ export default function InstallationScreen({ navigation }: Props) {
 
   const handleSubmit = () => {
     const newUser = {
-      id: user?.id, // Behåll befintligt användar-ID om det finns
+      id: user?.id ?? "", // Behåll befintligt användar-ID om det finns
       name: `${firstName} ${lastName}`,
       username: `${logInName}`,
       phoneNumber:`${phoneNumber}`,
-      passWord: `${passWord}`,
+      password: `${passWord}`,
       personnummer:`${personnummer}`,
       medications: [], 
+      notifiCations:[]
     };
 
-    addUser(newUser);
-    console.log('Förnamn:', firstName);
-    console.log('Efternamn:', lastName);
-    console.log('Personnummer:', personnummer);
-    console.log('Telefonnummer:', phoneNumber);
-    console.log('Användarnamn:', logInName);
-    console.log('Telefonnummer:', phoneNumber);
-    console.log('Lösenord:', passWord);
-
+   addUser(newUser);
     navigation.navigate('Hem');
   };
 

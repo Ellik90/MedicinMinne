@@ -12,8 +12,9 @@ export default function LoginScreen({ navigation }: Props) {
   const [loginName, setLoginName] = useState("");
   const [passWord, setPassWord] = useState("");
 
-  const handleLogin = () => {
-    const loggedIn = userLogIn(passWord, loginName);
+  const handleLogin = async () => {
+    const loggedIn = await userLogIn(passWord, loginName);
+    console.log("username i login:", loginName,"password i login:", passWord);
     if (loggedIn) {
       navigation.navigate("Användarsidan");
     } else {

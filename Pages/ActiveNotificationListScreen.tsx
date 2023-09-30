@@ -4,38 +4,35 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "./Navigator";
 import { useNotificationContext } from "../Contexts/NotificationContext";
 import { useNavigation } from "@react-navigation/native";
+import { NotificationModal } from "../Contexts/NotificationContext"
 import * as Notifications from 'expo-notifications';
+import { useUserContext } from "../Contexts/UserContext";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Notiser">;
 
 export default function ActiveNotificationListScreen({ navigation }: Props) {
-  const { notifications } = useNotificationContext();
-  const { navigate } = useNavigation();
-  const [refresh, setRefresh] = useState(false);
+  const { user } = useUserContext();
 
-  useEffect(() => {
-    getDeviceNotifications();
-  }, [refresh]);
+  // const [notifications, setNotifications] = useState<NotificationModal[]>([]); // Ange initialtyp här
+  const { navigate } = useNavigation();
+  // const [refresh, setRefresh] = useState(false);
+
+  // useEffect(() => {
+  //   getDeviceNotifications();
+  // }, []);
 
   const handleEditNotification = (notificationId: string) => {
-    navigation.navigate("Redigera");
+    navigation.navigate("Redigera", {id:notificationId});
   };
   
-
-  const getDeviceNotifications = async () => {
-    try {
-      const deviceNotifications = await Notifications.getAllScheduledNotificationsAsync();
-      setRefresh(!refresh);
-    } catch (error) {
-      console.error("Fel vid hämtning av notiser:", error);
-    }
-  };
+  
 
   const removeAllDeviceNotifications = async () => {
     try {
       await Notifications.cancelAllScheduledNotificationsAsync();
       // Uppdatera komponenten för att visa att notiserna har tagits bort
-      setRefresh(!refresh);
+      removeAllDeviceNotifications();
+   
     } catch (error) {
       console.error("Fel vid borttagning av notiser:", error);
     }
@@ -48,8 +45,8 @@ export default function ActiveNotificationListScreen({ navigation }: Props) {
         <Text>Radera alla notiser från enheten</Text>
       </TouchableOpacity>
       <FlatList
-        data={notifications || []}
-        extraData={refresh}
+        data={user?.notifiCations || []}
+        // extraData={refresh}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.medicationItem}>

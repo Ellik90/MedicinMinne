@@ -21,7 +21,7 @@ export default function MedicationInfoScreen({ navigation }: Props) {
   const [dose, setDose] = useState(medication?.dose || '');
   const [time, setTime] = useState(medication?.time || '');
   const [comment, setComment] = useState(medication?.comment || '');
-  const { user, setUser } = useUserContext();
+  const { user, setUser, addMedicationToUser } = useUserContext();
 
   const handleNameChange = (newName: string) => {
     setName(newName);
@@ -44,13 +44,16 @@ export default function MedicationInfoScreen({ navigation }: Props) {
   };
 
   const saveMedicationToUser = () => {
-    const updatedMedications = user?.medications ? [...user.medications] : [];
+    // const updatedMedications = user?.medications ? [...user.medications] : [];
 
-    if (medication) {
-      updatedMedications.push(medication);
+    // if (medication) {
+    //   updatedMedications.push(medication);
+    // }
+
+    // setUser({ ...user, medications: updatedMedications });
+    if(medication){
+      addMedicationToUser(medication);
     }
-
-    setUser({ ...user, medications: updatedMedications });
     navigation.navigate("Användarsidan");
   };
 

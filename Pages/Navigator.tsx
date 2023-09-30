@@ -23,8 +23,8 @@ export type RootStackParamList = {
   MedicationInfoScreen: undefined;
   MedicationNote: {id:string};
   Kamera: undefined;
-   Notiser: undefined;
-   Redigera: undefined;
+   Notiser: {id:string};
+   Redigera: {id:string};
 };
 
 const Navigator: React.FC = () => {

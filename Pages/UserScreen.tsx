@@ -22,7 +22,9 @@ export default function UserScreen({ navigation }: Props) {
 
   if (user && user.medications) {
     user.medications.forEach((medication, index) => {
-      console.log(`Medicin ${index + 1}: ID: ${medication.id}, Namn: ${medication.name}`);
+      console.log(
+        `Medicin ${index + 1}: ID: ${medication.id}, Namn: ${medication.name}`
+      );
     });
   }
 
@@ -49,14 +51,16 @@ export default function UserScreen({ navigation }: Props) {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          navigation.navigate("Notiser");
+          if (user && user.id) {
+            navigation.navigate("Notiser", { id: user.id }); // Ersätt user.id med den rätta parametern
+          }
         }}
       >
         <Text style={styles.buttonText}>Mina Notiser</Text>
       </TouchableOpacity>
 
       <FlatList
-        data={user?.medications || []} 
+        data={user?.medications || []}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.medicationItem}>
@@ -68,11 +72,11 @@ export default function UserScreen({ navigation }: Props) {
                 style={{ width: 100, height: 100 }}
               />
             }
-              <TouchableOpacity
+            <TouchableOpacity
               style={styles.button}
               onPress={() => {
-                if(item.id){
-                  navigation.navigate('MedicationNote', {id:item.id});
+                if (item.id) {
+                  navigation.navigate("MedicationNote", { id: item.id });
                 }
               }}
             >
@@ -81,17 +85,6 @@ export default function UserScreen({ navigation }: Props) {
           </View>
         )}
       />
-
-      
-{/* <FlatList
-        data={notifications || []} 
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.medicationItem}>
-            <Text>{item.name}</Text>
-            </View>
-            )}
-            /> */}
     </View>
   );
 }
@@ -99,9 +92,9 @@ export default function UserScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff", 
+    backgroundColor: "#ffffff",
     alignItems: "center",
-    justifyContent: "center", 
+    justifyContent: "center",
   },
   welcomeText: {
     padding: 10,
@@ -113,10 +106,10 @@ const styles = StyleSheet.create({
     backgroundColor: "pink",
     padding: 10,
     alignItems: "center",
-    marginTop: 20, 
+    marginTop: 20,
   },
   buttonText: {
-    color: "white", 
+    color: "white",
     fontSize: 20,
     fontWeight: "bold",
   },

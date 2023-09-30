@@ -8,6 +8,7 @@ import { NotificationProvider } from './Contexts/NotificationContext';
 
 
 const App: React.FC = () => {
+
   return (
     <NotificationProvider>
     <ImageUploadProvider>

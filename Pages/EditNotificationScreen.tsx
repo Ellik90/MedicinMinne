@@ -1,75 +1,72 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { RootStackParamList } from "./Navigator";
 import { useUserContext } from "../Contexts/UserContext";
-import { useNotificationContext } from "../Contexts/NotificationContext";
-import { useNavigation } from "@react-navigation/native";
 import * as Notifications from 'expo-notifications';
+import { RouteProp, useRoute } from "@react-navigation/native";
 
-type Props = NativeStackScreenProps<RootStackParamList, "Redigera">;
+type Props = RouteProp<RootStackParamList, "Redigera">;
 
-export default function EditNotificationScreen({ navigation }: Props) {
-  const { userLogIn } = useUserContext();
-  const [loginName, setLoginName] = useState("");
-  const [passWord, setPassWord] = useState("");
-  const { notifications, selectedDate, editNotification, deleteNotification } = useNotificationContext();
-  const { navigate } = useNavigation();
+export default function EditNotificationScreen() {
+  const { removeNotificationFromUser } = useUserContext();
+  const { user } = useUserContext();
+  const route = useRoute<Props>();
+  const { id } = route.params;
+  const notificationToEdit = user?.notifiCations.find((n) => n.id === id);
+  const [notificationId, setNotificationId] = useState<string | null>(null);
 
-  useEffect(() => {
-    getDeviceNotifications();
-  }, []);
 
-  const getDeviceNotifications = async () => {
-    try {
-      const notifications = await Notifications.getAllScheduledNotificationsAsync();
-    } catch (error) {
-      console.error("Fel vid hämtning av notiser:", error);
+  //anropas av ta bort alla-knapp i ACTIVENOTIFICATIONLIST... o denna sidan bort 
+  const handleDeleteNotification = async (notificationId: string | undefined) => {
+    if (notificationId) {
+      await Notifications.cancelScheduledNotificationAsync(notificationId);
+      // Ta bort notis-ID från state eller databasen
+      setNotificationId(null);
+   
+        // Remove the notification from your user context or data store
+        removeNotificationFromUser(notificationId);
+    }
+        
+   
+  };
+
+  // const cancelScheduledNotification = async () => {
+  //   if (notificationId) {
+  //     await Notifications.cancelScheduledNotificationAsync(notificationId);
+  //     setNotificationId(null); // Återställ notis-ID
+  //   }
+  // };
+
+  const removeNotification = async () => {
+    if (notificationId) {
+      await Notifications.cancelScheduledNotificationAsync(notificationId);
+      // Ta bort notis-ID från state eller databasen
+      setNotificationId(null);
     }
   };
-
-  const handleEditNotification = (notificationId: string) => {
-    // ...
-  };
-
-  const handleDeleteNotification = async (notificationId: string) => {
-    try {
-      deleteNotification(notificationId);
-
-      await Notifications.dismissNotificationAsync(notificationId);
-    } catch (error) {
-      console.error("Fel vid borttagning av notis:", error);
-    }
-  };
+  
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={notifications || []}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.medicationItem}>
-            <Text>{item.name}</Text>
-            <Text>{item.dose}</Text>
-            <Text>{item.time}</Text>
-            <Text>{item.comment}</Text>
-            <Image
-              source={{ uri: item.url }}
-              style={{ width: 100, height: 100 }}
-            />
-            <Text>Valt datum: {item.selectedDate?.toString()}</Text>
-            <TouchableOpacity onPress={() => handleEditNotification(item.id)}>
-              <Text>Redigera</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleDeleteNotification(item.id)}>
-              <Text>Radera</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
+      <View style={styles.medicationItem}>
+        <Text>{notificationToEdit?.name}</Text>
+        {/* Other notification details */}
+        {/* {notificationId && (
+        <TouchableOpacity
+          style={styles.button}
+          onPress={cancelScheduledNotification}
+        >
+          <Text>Radera notis</Text>
+        </TouchableOpacity>
+      )} */}
+        <TouchableOpacity onPress={() => handleDeleteNotification(notificationToEdit?.id)}>
+          <Text>Radera</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
