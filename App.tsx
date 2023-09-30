@@ -10,17 +10,21 @@ import { NotificationProvider } from './Contexts/NotificationContext';
 const App: React.FC = () => {
 
   return (
+    <MedicationProvider>
+    <UserProvider>
     <NotificationProvider>
     <ImageUploadProvider>
-      <MedicationProvider>
-      <UserProvider>
+      
+     
     <NavigationContainer>
       <Navigator />
     </NavigationContainer>
-    </UserProvider>
-    </MedicationProvider>
+    
+    
     </ImageUploadProvider>
     </NotificationProvider>
+    </UserProvider>
+    </MedicationProvider>
   );
 };
 

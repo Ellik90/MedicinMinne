@@ -4,11 +4,14 @@ import { RootStackParamList } from "./Navigator";
 import { useUserContext } from "../Contexts/UserContext";
 import * as Notifications from 'expo-notifications';
 import { RouteProp, useRoute } from "@react-navigation/native";
+import { useNotificationContext } from "../Contexts/NotificationContext";
 
 type Props = RouteProp<RootStackParamList, "Redigera">;
 
 export default function EditNotificationScreen() {
   const { removeNotificationFromUser } = useUserContext();
+  const { cancelAllScheduledNotifications, deleteNotification } = useNotificationContext();
+
   const { user } = useUserContext();
   const route = useRoute<Props>();
   const { id } = route.params;
@@ -24,7 +27,8 @@ export default function EditNotificationScreen() {
       setNotificationId(null);
    
         // Remove the notification from your user context or data store
-        removeNotificationFromUser(notificationId);
+        deleteNotification(notificationId);
+        removeNotificationFromUser(notificationId)
     }
         
    
@@ -37,13 +41,13 @@ export default function EditNotificationScreen() {
   //   }
   // };
 
-  const removeNotification = async () => {
-    if (notificationId) {
-      await Notifications.cancelScheduledNotificationAsync(notificationId);
-      // Ta bort notis-ID från state eller databasen
-      setNotificationId(null);
-    }
-  };
+  // const removeNotification = async () => {
+  //   if (notificationId) {
+  //     await Notifications.cancelScheduledNotificationAsync(notificationId);
+  //     // Ta bort notis-ID från state eller databasen
+  //     setNotificationId(null);
+  //   }
+  // };
   
 
   return (

@@ -8,10 +8,12 @@ import { NotificationModal } from "../Contexts/NotificationContext"
 import * as Notifications from 'expo-notifications';
 import { useUserContext } from "../Contexts/UserContext";
 
+
 type Props = NativeStackScreenProps<RootStackParamList, "Notiser">;
 
 export default function ActiveNotificationListScreen({ navigation }: Props) {
   const { user } = useUserContext();
+  const { cancelAllScheduledNotifications } = useNotificationContext();
 
   // const [notifications, setNotifications] = useState<NotificationModal[]>([]); // Ange initialtyp här
   const { navigate } = useNavigation();
@@ -27,21 +29,21 @@ export default function ActiveNotificationListScreen({ navigation }: Props) {
   
   
 
-  const removeAllDeviceNotifications = async () => {
-    try {
-      await Notifications.cancelAllScheduledNotificationsAsync();
-      // Uppdatera komponenten för att visa att notiserna har tagits bort
-      removeAllDeviceNotifications();
+  // const removeAllDeviceNotifications = async () => {
+  //   try {
+  //     await Notifications.cancelAllScheduledNotificationsAsync();
+  //     // Uppdatera komponenten för att visa att notiserna har tagits bort
+  //     removeAllDeviceNotifications();
    
-    } catch (error) {
-      console.error("Fel vid borttagning av notiser:", error);
-    }
-  };
+  //   } catch (error) {
+  //     console.error("Fel vid borttagning av notiser:", error);
+  //   }
+  // };
   
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={removeAllDeviceNotifications}>
+      <TouchableOpacity onPress={cancelAllScheduledNotifications}>
         <Text>Radera alla notiser från enheten</Text>
       </TouchableOpacity>
       <FlatList
