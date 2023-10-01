@@ -9,7 +9,7 @@ import LoginScreen from './LoginScreen';
 import MedicationNotificationScreen from './MedicationNotificationScreen';
 import CameraScreen from './CameraScreen';
 import ActiveNotificationListScreen from './ActiveNotificationListScreen';
-import EditNotificationScreen from './EditNotificationScreen';
+// import EditNotificationScreen from './EditNotificationScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 export type RootStackParamList = {
@@ -39,7 +39,7 @@ const Navigator: React.FC = () => {
         <Stack.Screen name="MedicationNote" component={MedicationNotificationScreen} />
         <Stack.Screen name="Kamera" component={CameraScreen} />
         <Stack.Screen name="Notiser" component={ActiveNotificationListScreen} />
-        <Stack.Screen name="Redigera" component={EditNotificationScreen} />
+        {/* <Stack.Screen name="Redigera" component={EditNotificationScreen} /> */}
       </Stack.Navigator>
   );
 };

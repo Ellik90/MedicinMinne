@@ -19,7 +19,7 @@ export default function InstallationScreen({ navigation }: Props) {
 
   const handleSubmit = () => {
     const newUser = {
-      id: user?.id ?? "", // Behåll befintligt användar-ID om det finns
+      id: user?.id ?? "", 
       name: `${firstName} ${lastName}`,
       username: `${logInName}`,
       phoneNumber:`${phoneNumber}`,

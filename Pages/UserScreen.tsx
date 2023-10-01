@@ -52,7 +52,7 @@ export default function UserScreen({ navigation }: Props) {
         style={styles.button}
         onPress={() => {
           if (user && user.id) {
-            navigation.navigate("Notiser", { id: user.id }); // Ersätt user.id med den rätta parametern
+            navigation.navigate("Notiser", { id: user.id }); 
           }
         }}
       >

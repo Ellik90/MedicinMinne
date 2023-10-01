@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -11,23 +11,15 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "./Navigator";
 import { useNotificationContext } from "../Contexts/NotificationContext";
 import { useNavigation } from "@react-navigation/native";
-import { NotificationModal } from "../Contexts/NotificationContext";
 import * as Notifications from "expo-notifications";
 import { useUserContext } from "../Contexts/UserContext";
 
-import { RouteProp, useRoute } from "@react-navigation/native";
-
-// type Props = RouteProp<RootStackParamList, "Notiser">;
 
 type Props = NativeStackScreenProps<RootStackParamList, "Notiser">;
 
 export default function ActiveNotificationListScreen({ navigation }: Props) {
   const { removeNotificationFromUser } = useUserContext();
   const { user } = useUserContext();
-  // const route = useRoute<Props>();
-  // const { id } = route.params;
-  // const notificationToEdit = user?.notifiCations.find((n) => n.id);
-  // const [notificationId, setNotificationId] = useState<string | null>(null);
  
   const { notifications, cancelAllScheduledNotifications,  cancelScheduledNotificationById } =
     useNotificationContext();
@@ -61,7 +53,6 @@ export default function ActiveNotificationListScreen({ navigation }: Props) {
       </TouchableOpacity>
       <FlatList
         data={user?.notifiCations || []}
-        // extraData={refresh}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.medicationItem}>
@@ -81,17 +72,6 @@ export default function ActiveNotificationListScreen({ navigation }: Props) {
               >
                 <Text>Radera notis</Text>
               </TouchableOpacity>
-              {/* <TouchableOpacity
-                style={styles.button}
-                onPress={() => handleDeleteNotification(item.id)}
-              >
-                <Text>Radera notis</Text>
-              </TouchableOpacity> */}
-        
-
-            {/* <TouchableOpacity onPress={() => handleEditNotification(item.id)}>
-              <Text>Redigera</Text>
-            </TouchableOpacity> */}
           </View>
         )}
       />

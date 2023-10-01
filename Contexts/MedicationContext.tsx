@@ -1,6 +1,4 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Timespan } from 'react-native/Libraries/Utilities/IPerformanceLogger';
-
 
 export interface Medication {
     id?: string;
@@ -11,14 +9,11 @@ export interface Medication {
   time?: string;    
 }
 
-
 type MedicationContextType = {
   medication: Medication | null;
   setMedication: (medication: Medication | null) => void; 
-  addMedication: (medication: Medication) => void; 
-  
+  addMedication: (medication: Medication) => void;   
 };
-
 
 const MedicationContext = createContext<MedicationContextType | undefined>(undefined);
 
@@ -34,8 +29,6 @@ export const MedicationProvider: React.FC<{ children: ReactNode }> = ({ children
     setMedication({...medication, id: medication.id});
     console.log(medication)
    }
-
-
 
   return (
     <MedicationContext.Provider value={{ medication, setMedication, addMedication }}>

@@ -1,9 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { getData } from '../asyncStorage';
 import * as Notifications from 'expo-notifications';
-
-import { useUserContext } from './UserContext';
-import { Medication, useMedicationContext } from './MedicationContext';
 
 export type NotificationModal = {
   id: string;
@@ -22,10 +18,8 @@ type NotificationContextType = {
   editNotification: (updatedNotification: NotificationModal) => void;
   cancelScheduledNotificationById : (notificationId: string) => void;
  
-  // removeNotificationById: (notificationId: string) => void;
   scheduleNotification: (date: Date, repetition: string, notificationBody:string, notificationId: string) => Promise<string>; 
   cancelAllScheduledNotifications: () => void;
-  // cancelScheduledNotification: (notificationId: string) => void;
 };
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
@@ -34,9 +28,6 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [notifications, setNotifications] = useState<NotificationModal[]>([]);
   const [notificationId, setNotificationId] = useState<string | null >(null);
-  const { user } = useUserContext();
-  const { medication } = useMedicationContext();
- 
   
   const scheduleNotification = async (date: Date, repetition: string, notificationBody:string) => {
     const now = new Date();
@@ -51,7 +42,7 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
     });
 
     let repeatInterval = 0;
-
+    // KOLLA UPP ANDRA ALTERNATIV FÖR ATT SKAPA REPETITION, EV EFTER CALENDER IST?
     if (repetition === "Dagligen") {
       repeatInterval = 24 * 60 * 60 * 1000;
     } else if (repetition === "Varannan dag") {
@@ -59,7 +50,6 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
     } else if (repetition === "Veckovis") {
       repeatInterval = 7 * 24 * 60 * 60 * 1000;
     } else if (repetition === "Månadsvis") {
-      // Lägg till kod här för att hantera månadsvis repetition
     } else if (repetition === "Varje minut") {
       repeatInterval = 60 * 1000;
     } else if (repetition === "var femte sekund") {
@@ -84,16 +74,6 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
     return notificationId;
   };
 
-
-
-
-  //  const cancelScheduledNotification = async () => {
-  //   if (notificationId) {
-  //     await Notifications.cancelScheduledNotificationAsync(notificationId);
-  //     setNotificationId(null); // Återställ notis-ID
-  //   }
-  // };
-
   const cancelAllScheduledNotifications = async () => {
     await Notifications.cancelAllScheduledNotificationsAsync();
   };
@@ -109,11 +89,9 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
 
 
   const editNotification = (updatedNotification: NotificationModal) => {
-    // Hitta indexet för den notis som ska redigeras
     const index = notifications.findIndex((n) => n.id === updatedNotification.id);
 
     if (index !== -1) {
-      // Skapa en kopia av notislistan och ersätt den gamla notisen med den uppdaterade notisen
       const updatedNotifications = [...notifications];
       updatedNotifications[index] = updatedNotification;
 
@@ -127,7 +105,6 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
       if (notificationId) {
         console.log('Raderar en notis')
         await Notifications.cancelScheduledNotificationAsync(notificationId);
-        // Ta bort notisen från ditt state eller var du än sparar den
         const updatedNotifications = notifications.filter((n) => n.id !== notificationId);
         setNotifications(updatedNotifications);
       }
@@ -135,8 +112,6 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
       console.error(`Error deleting notification: ${error}`);
     }
   };
-  
-  
   
   return (
     <NotificationContext.Provider value={{selectedDate, notifications, addNotification, editNotification,  cancelScheduledNotificationById , scheduleNotification, cancelAllScheduledNotifications   }}>
@@ -153,18 +128,3 @@ export const useNotificationContext = () => {
   return context;
 };
 
-
-  // const editNotification = (updatedNotification: NotificationModal) => {
-  //   const index = notifications.findIndex(
-  //     (n) => n.id === updatedNotification.id
-  //   );
-
-  //   if (index !== -1) {
-  //     const updatedNotifications = [...notifications];
-  //     updatedNotifications[index] = updatedNotification;
-
-  //     setNotifications(updatedNotifications);
-  //     const notificationId = updatedNotification.id;
-  //     scheduleNotification(updatedNotification.selectedDate, "Dagligen", notificationId);
-  //   }
-  // };

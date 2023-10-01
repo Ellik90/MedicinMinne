@@ -44,13 +44,6 @@ export default function MedicationInfoScreen({ navigation }: Props) {
   };
 
   const saveMedicationToUser = () => {
-    // const updatedMedications = user?.medications ? [...user.medications] : [];
-
-    // if (medication) {
-    //   updatedMedications.push(medication);
-    // }
-
-    // setUser({ ...user, medications: updatedMedications });
     if(medication){
       addMedicationToUser(medication);
     }
@@ -81,7 +74,6 @@ export default function MedicationInfoScreen({ navigation }: Props) {
         placeholder="Kommentar"
       />
 
-      {/* <Text>{comment}</Text> */}
       {medication?.url && (
         <Image source={{ uri: medication.url }} style={{ width: 100, height: 100 }} />
       )}
