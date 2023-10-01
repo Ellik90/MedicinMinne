@@ -10,7 +10,7 @@ type Props = RouteProp<RootStackParamList, "Redigera">;
 
 export default function EditNotificationScreen() {
   const { removeNotificationFromUser } = useUserContext();
-  const { cancelAllScheduledNotifications, deleteNotification } = useNotificationContext();
+  const { cancelAllScheduledNotifications,  cancelScheduledNotificationById  } = useNotificationContext();
 
   const { user } = useUserContext();
   const route = useRoute<Props>();
@@ -20,19 +20,34 @@ export default function EditNotificationScreen() {
 
 
   //anropas av ta bort alla-knapp i ACTIVENOTIFICATIONLIST... o denna sidan bort 
-  const handleDeleteNotification = async (notificationId: string | undefined) => {
-    if (notificationId) {
-      await Notifications.cancelScheduledNotificationAsync(notificationId);
-      // Ta bort notis-ID från state eller databasen
-      setNotificationId(null);
+  // const handleDeleteNotification = async (notificationId: string | undefined) => {
+  //   if (notificationId) {
+  //     await Notifications.cancelScheduledNotificationAsync(notificationId);
+  //     // Ta bort notis-ID från state eller databasen
+  //     setNotificationId(null);
    
-        // Remove the notification from your user context or data store
-        deleteNotification(notificationId);
-        removeNotificationFromUser(notificationId)
-    }
+  //       // Remove the notification from your user context or data store
+  //       deleteNotification(notificationId);
+  //       removeNotificationFromUser(notificationId)
+  //   }
         
    
-  };
+  // };
+
+  // const handleDeleteNotification = async (notificationId: string | undefined) => {
+  //   if (notificationId) {
+  //     await Notifications.cancelScheduledNotificationAsync(notificationId);
+  //     // Ta bort notis-ID från state eller databasen
+  //     setNotificationId(null);
+  
+  //     // Använd "id" från ruttparametrarna för att ta bort notifikationen
+  //     if (notificationToEdit?.id) {
+  //       deleteNotification(notificationToEdit.id);
+  //       removeNotificationFromUser(notificationToEdit.id);
+  //     }
+  //   }
+  // };
+  
 
   // const cancelScheduledNotification = async () => {
   //   if (notificationId) {
@@ -63,9 +78,12 @@ export default function EditNotificationScreen() {
           <Text>Radera notis</Text>
         </TouchableOpacity>
       )} */}
-        <TouchableOpacity onPress={() => handleDeleteNotification(notificationToEdit?.id)}>
-          <Text>Radera</Text>
-        </TouchableOpacity>
+        {/* {notificationId && ( */}
+        {/* <TouchableOpacity style={styles.button} onPress={() => handleDeleteNotification(notificationToEdit?.id)}
+         >
+         <Text>Radera</Text>
+        </TouchableOpacity> */}
+        {/* )} */}
       </View>
     </View>
   );

@@ -19,11 +19,12 @@ type NotificationContextType = {
   notifications: NotificationModal[];
   addNotification: (notification: NotificationModal, repetition:string) => void;
   editNotification: (updatedNotification: NotificationModal) => void;
-  deleteNotification: (notificationId: string) => void;
-  
+  cancelScheduledNotificationById : (notificationId: string) => void;
+ 
   // removeNotificationById: (notificationId: string) => void;
-  scheduleNotification: (date: Date, repetition: string, notificationBody:string) => void; 
+  scheduleNotification: (date: Date, repetition: string, notificationBody:string, notificationId: string) => void; 
   cancelAllScheduledNotifications: () => void;
+  // cancelScheduledNotification: (notificationId: string) => void;
 };
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
@@ -31,7 +32,7 @@ const NotificationContext = createContext<NotificationContextType | undefined>(u
 export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [notifications, setNotifications] = useState<NotificationModal[]>([]);
-  const [notificationId, setNotificationId] = useState<string | null>(null);
+  const [notificationId, setNotificationId] = useState<string | null >(null);
   const { user } = useUserContext();
   const { medication } = useMedicationContext();
  
@@ -65,7 +66,7 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
 
     const firstNotificationTime = new Date(date.getTime() - timeDiff);
 
-    const notificationId = await Notifications.scheduleNotificationAsync({
+     const notificationId = await Notifications.scheduleNotificationAsync({
       content: {
         title: "Medicinpåminnelse",
         
@@ -80,20 +81,13 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
     setNotificationId(notificationId);
   };
 
-   const cancelScheduledNotification = async () => {
-    if (notificationId) {
-      await Notifications.cancelScheduledNotificationAsync(notificationId);
-      setNotificationId(null); // Återställ notis-ID
-    }
-  };
 
 
- 
 
-  // const cancelScheduledNotification = async (notificationId: string) => {
+  //  const cancelScheduledNotification = async () => {
   //   if (notificationId) {
   //     await Notifications.cancelScheduledNotificationAsync(notificationId);
-  //     setNotificationId(null);
+  //     setNotificationId(null); // Återställ notis-ID
   //   }
   // };
 
@@ -109,31 +103,6 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
     scheduleNotification(notification.selectedDate, repetition, notificationBody);
   };
 
-  // const editNotification = (updatedNotification: NotificationModal) => {
-  //   const index = notifications.findIndex(
-  //     (n) => n.id === updatedNotification.id
-  //   );
-
-  //   if (index !== -1) {
-  //     const updatedNotifications = [...notifications];
-  //     updatedNotifications[index] = updatedNotification;
-
-  //     setNotifications(updatedNotifications);
-  //     const notificationId = updatedNotification.id;
-  //     scheduleNotification(updatedNotification.selectedDate, "Dagligen", notificationId);
-  //   }
-  // };
-
-
-
-  
-
-
-  // const addNotification = (notification: NotificationModal) => {
-  //   setNotifications([...notifications, notification]);
-  //   setSelectedDate(notification.selectedDate); 
-
-  // };
 
   const editNotification = (updatedNotification: NotificationModal) => {
     // Hitta indexet för den notis som ska redigeras
@@ -148,42 +117,24 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
     }
   };
 
-  // const deleteNotification = (notificationId: string) => {
- 
-  //   const updatedNotifications = notifications.filter((n) => n.id !== notificationId);
-  //   setNotifications(updatedNotifications);
-  // };
-  const deleteNotification = (notificationId: string) => {
-    const updatedNotifications = notifications.filter(
-      (n) => n.id !== notificationId
-    );
-    setNotifications(updatedNotifications);
-    cancelScheduledNotification();
+
+  const  cancelScheduledNotificationById  = async (notificationId: string) => {
+    try {
+      if (notificationId) {
+        await Notifications.cancelScheduledNotificationAsync(notificationId);
+        // Ta bort notisen från ditt state eller var du än sparar den
+        const updatedNotifications = notifications.filter((n) => n.id !== notificationId);
+        setNotifications(updatedNotifications);
+      }
+    } catch (error) {
+      console.error(`Error deleting notification: ${error}`);
+    }
   };
-
-
-  // const removeNotificationById = async (notificationId: string) => {
-  //   try {
-  //     await Notifications.cancelScheduledNotificationAsync(notificationId);
-  //   } catch (error) {
-  //     console.error(`Error deleting notification: ${error}`);
-  //   }
-  // };
-  // const removeNotificationById = async (notificationId: string) => {
-  //   try {
-    
-  //     await Notifications.cancelScheduledNotificationAsync(notificationId);
-    
-  //   } catch (error) {
-     
-  //     console.error(`Error deleting notification: ${error}`);
-  //   }
-  // };
-
-
-
+  
+  
+  
   return (
-    <NotificationContext.Provider value={{selectedDate, notifications, addNotification, editNotification, deleteNotification, scheduleNotification, cancelAllScheduledNotifications   }}>
+    <NotificationContext.Provider value={{selectedDate, notifications, addNotification, editNotification,  cancelScheduledNotificationById , scheduleNotification, cancelAllScheduledNotifications   }}>
       {children}
     </NotificationContext.Provider>
   );
@@ -196,3 +147,19 @@ export const useNotificationContext = () => {
   }
   return context;
 };
+
+
+  // const editNotification = (updatedNotification: NotificationModal) => {
+  //   const index = notifications.findIndex(
+  //     (n) => n.id === updatedNotification.id
+  //   );
+
+  //   if (index !== -1) {
+  //     const updatedNotifications = [...notifications];
+  //     updatedNotifications[index] = updatedNotification;
+
+  //     setNotifications(updatedNotifications);
+  //     const notificationId = updatedNotification.id;
+  //     scheduleNotification(updatedNotification.selectedDate, "Dagligen", notificationId);
+  //   }
+  // };

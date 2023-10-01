@@ -1,19 +1,36 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+  Image,
+} from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "./Navigator";
 import { useNotificationContext } from "../Contexts/NotificationContext";
 import { useNavigation } from "@react-navigation/native";
-import { NotificationModal } from "../Contexts/NotificationContext"
-import * as Notifications from 'expo-notifications';
+import { NotificationModal } from "../Contexts/NotificationContext";
+import * as Notifications from "expo-notifications";
 import { useUserContext } from "../Contexts/UserContext";
 
+import { RouteProp, useRoute } from "@react-navigation/native";
+
+// type Props = RouteProp<RootStackParamList, "Notiser">;
 
 type Props = NativeStackScreenProps<RootStackParamList, "Notiser">;
 
 export default function ActiveNotificationListScreen({ navigation }: Props) {
+  const { removeNotificationFromUser } = useUserContext();
   const { user } = useUserContext();
-  const { cancelAllScheduledNotifications } = useNotificationContext();
+  // const route = useRoute<Props>();
+  // const { id } = route.params;
+  // const notificationToEdit = user?.notifiCations.find((n) => n.id);
+  // const [notificationId, setNotificationId] = useState<string | null>(null);
+ 
+  const { notifications, cancelAllScheduledNotifications,  cancelScheduledNotificationById } =
+    useNotificationContext();
 
   // const [notifications, setNotifications] = useState<NotificationModal[]>([]); // Ange initialtyp här
   const { navigate } = useNavigation();
@@ -23,23 +40,34 @@ export default function ActiveNotificationListScreen({ navigation }: Props) {
   //   getDeviceNotifications();
   // }, []);
 
-  const handleEditNotification = (notificationId: string) => {
-    navigation.navigate("Redigera", {id:notificationId});
-  };
-  
-  
-
-  // const removeAllDeviceNotifications = async () => {
-  //   try {
-  //     await Notifications.cancelAllScheduledNotificationsAsync();
-  //     // Uppdatera komponenten för att visa att notiserna har tagits bort
-  //     removeAllDeviceNotifications();
-   
-  //   } catch (error) {
-  //     console.error("Fel vid borttagning av notiser:", error);
+  // const handleEditNotification = (notificationId: string) => {
+  //   navigation.navigate("Redigera", { id: notificationId });
+  // };
+  //  const cancelScheduledNotification = async () => {
+  //   if (notifications) {
+  //     await Notifications.cancelScheduledNotificationAsync(notifications);
+    
   //   }
   // };
+
+  const handleDeleteNotification = async (notificationId: string | undefined) => {
+    if (notificationId) {
+      try {
+       
+        // deleteNotification(notificationId);
+        removeNotificationFromUser(notificationId);
+        // Avbryt den schemalagda notisen
+        cancelScheduledNotificationById (notificationId);
+        // cancelScheduledNotificationAsync(notificationId);
   
+        // Ta bort notisen från din interna state och användarens notifikationslista
+      
+        
+      } catch (error) {
+        console.error("Fel vid borttagning av notis:", error);
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -61,9 +89,24 @@ export default function ActiveNotificationListScreen({ navigation }: Props) {
               style={{ width: 100, height: 100 }}
             />
             <Text>Valt datum: {item.selectedDate?.toString()}</Text>
-            <TouchableOpacity onPress={() => handleEditNotification(item.id)}>
+
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => handleDeleteNotification(item.id)}
+              >
+                <Text>Radera notis</Text>
+              </TouchableOpacity>
+              {/* <TouchableOpacity
+                style={styles.button}
+                onPress={() => handleDeleteNotification(item.id)}
+              >
+                <Text>Radera notis</Text>
+              </TouchableOpacity> */}
+        
+
+            {/* <TouchableOpacity onPress={() => handleEditNotification(item.id)}>
               <Text>Redigera</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         )}
       />
@@ -107,5 +150,3 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
-
-
