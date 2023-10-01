@@ -83,8 +83,10 @@ export default function MedicationNotificationScreen() {
         selectedDate: selectedDate,
       };
 
-      addNotificationToUser(newNotification);
-      addNotification(newNotification, repetition);
+      // addNotificationToUser(newNotification);
+      const newNotificationId = await addNotification(newNotification, repetition);
+
+      addNotificationToUser(newNotification, newNotificationId);
     }
   };
 

@@ -31,43 +31,28 @@ export default function ActiveNotificationListScreen({ navigation }: Props) {
  
   const { notifications, cancelAllScheduledNotifications,  cancelScheduledNotificationById } =
     useNotificationContext();
-
-  // const [notifications, setNotifications] = useState<NotificationModal[]>([]); // Ange initialtyp här
   const { navigate } = useNavigation();
-  // const [refresh, setRefresh] = useState(false);
 
-  // useEffect(() => {
-  //   getDeviceNotifications();
-  // }, []);
-
-  // const handleEditNotification = (notificationId: string) => {
-  //   navigation.navigate("Redigera", { id: notificationId });
-  // };
-  //  const cancelScheduledNotification = async () => {
-  //   if (notifications) {
-  //     await Notifications.cancelScheduledNotificationAsync(notifications);
-    
-  //   }
-  // };
-
+  
   const handleDeleteNotification = async (notificationId: string | undefined) => {
     if (notificationId) {
       try {
        
-        // deleteNotification(notificationId);
-        removeNotificationFromUser(notificationId);
-        // Avbryt den schemalagda notisen
+        console.log("id på den notisen som raderas här nu: ", notificationId);
+ 
         cancelScheduledNotificationById (notificationId);
-        // cancelScheduledNotificationAsync(notificationId);
-  
-        // Ta bort notisen från din interna state och användarens notifikationslista
+
+        await Notifications.cancelScheduledNotificationAsync(notificationId);
+       
+         removeNotificationFromUser(notificationId);
       
-        
       } catch (error) {
         console.error("Fel vid borttagning av notis:", error);
       }
     }
   };
+
+
 
   return (
     <View style={styles.container}>

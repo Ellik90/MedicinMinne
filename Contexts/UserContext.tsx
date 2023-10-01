@@ -10,7 +10,7 @@ type UserContextType = {
   userLogIn: (password: string, username:string) => Promise<boolean>;
   addUser: (user: User | null) => Promise<void>;
   addMedicationToUser: (medication: Medication) => void;
-  addNotificationToUser: (notification: NotificationModal) => Promise<void>;
+  addNotificationToUser: (notification: NotificationModal, newNotificationId:string) => Promise<void>;
   removeNotificationFromUser: (id: string) => Promise<void>;
 };
   //en metod som lägger till en medication till listan 
@@ -55,9 +55,11 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }
 
 
-  async function addNotificationToUser(notification:NotificationModal){
+  async function addNotificationToUser(notification:NotificationModal, newNotificationId:string){
     if (user) {
       if (notification) {
+        notification.id = newNotificationId;
+        console.log("nu får notisen nya idt till async storage:", newNotificationId);
         user.notifiCations.push(notification as never);
         await addUser(user);
       }

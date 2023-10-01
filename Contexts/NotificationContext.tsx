@@ -1,9 +1,10 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { getData } from '../asyncStorage';
 import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
+
 import { useUserContext } from './UserContext';
 import { Medication, useMedicationContext } from './MedicationContext';
+
 export type NotificationModal = {
   id: string;
   url: string;
@@ -17,12 +18,12 @@ export type NotificationModal = {
 type NotificationContextType = {
   selectedDate: Date | null; 
   notifications: NotificationModal[];
-  addNotification: (notification: NotificationModal, repetition:string) => void;
+  addNotification: (notification: NotificationModal, repetition:string) => Promise<string>;
   editNotification: (updatedNotification: NotificationModal) => void;
   cancelScheduledNotificationById : (notificationId: string) => void;
  
   // removeNotificationById: (notificationId: string) => void;
-  scheduleNotification: (date: Date, repetition: string, notificationBody:string, notificationId: string) => void; 
+  scheduleNotification: (date: Date, repetition: string, notificationBody:string, notificationId: string) => Promise<string>; 
   cancelAllScheduledNotifications: () => void;
   // cancelScheduledNotification: (notificationId: string) => void;
 };
@@ -36,6 +37,7 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
   const { user } = useUserContext();
   const { medication } = useMedicationContext();
  
+  
   const scheduleNotification = async (date: Date, repetition: string, notificationBody:string) => {
     const now = new Date();
     const timeDiff = date.getTime() - now.getTime();
@@ -64,7 +66,6 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
       repeatInterval = 5 * 1000;
     }
 
-    const firstNotificationTime = new Date(date.getTime() - timeDiff);
 
      const notificationId = await Notifications.scheduleNotificationAsync({
       content: {
@@ -78,7 +79,9 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
       },
     });
 
+    console.log("Notifikationsid", notificationId)
     setNotificationId(notificationId);
+    return notificationId;
   };
 
 
@@ -100,7 +103,8 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
     const notificationBody = `Dags att ta ${notification?.time} medicinen ${notification?.name}`
     setNotifications([...notifications, notification]);
     setSelectedDate(notification.selectedDate);
-    scheduleNotification(notification.selectedDate, repetition, notificationBody);
+    const newNotificationId = scheduleNotification(notification.selectedDate, repetition, notificationBody);
+    return newNotificationId;
   };
 
 
@@ -121,6 +125,7 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
   const  cancelScheduledNotificationById  = async (notificationId: string) => {
     try {
       if (notificationId) {
+        console.log('Raderar en notis')
         await Notifications.cancelScheduledNotificationAsync(notificationId);
         // Ta bort notisen från ditt state eller var du än sparar den
         const updatedNotifications = notifications.filter((n) => n.id !== notificationId);
