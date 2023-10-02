@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   usePhotoButton: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 35,
     alignSelf: 'center',
     backgroundColor: 'white',
     paddingHorizontal: 20,

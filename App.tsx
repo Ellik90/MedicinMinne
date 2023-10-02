@@ -5,11 +5,13 @@ import { ImageUploadProvider } from './Contexts/ImageUploadContext';
 import { UserProvider } from './Contexts/UserContext';
 import { MedicationProvider } from './Contexts/MedicationContext';
 import { NotificationProvider } from './Contexts/NotificationContext';
+import { ThemeProvider } from './Contexts/ThemeContext';
 
 
 const App: React.FC = () => {
 
   return (
+    <ThemeProvider>
     <MedicationProvider>
     <UserProvider>
     <NotificationProvider>
@@ -25,6 +27,7 @@ const App: React.FC = () => {
     </NotificationProvider>
     </UserProvider>
     </MedicationProvider>
+    </ThemeProvider>
   );
 };
 

@@ -51,7 +51,7 @@ export default function UserImageScreen({ navigation }: Props) {
         />
       </View>
       <View style={styles.footerContainer}>
-        <ButtonImageViev
+        <ButtonImageViev 
           theme="primary"
           label="Choose a photo"
           onPress={handleSelectImage}
@@ -81,5 +81,20 @@ const styles = StyleSheet.create({
     flex: 1 / 3,
     alignItems: "center",
   },
+  title: {
+    fontSize: 30,
+    fontWeight: "bold",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  button: {
+    backgroundColor: "pink",
+    padding: 15,
+    borderRadius: 5,
+    marginTop: 20,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 20,}
 });
 

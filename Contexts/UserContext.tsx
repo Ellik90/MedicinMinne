@@ -15,6 +15,7 @@ type UserContextType = {
     newNotificationId: string
   ) => Promise<void>;
   removeNotificationFromUser: (id: string) => Promise<void>;
+  removeMedicationFromUser: (medicationId: string) => void;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -58,6 +59,17 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     }
   }
 
+  async function removeMedicationFromUser(medicationId: string) {
+    if (user) {
+      user.medications.forEach((med, index) => {
+        if (med.id === medicationId) {
+          user.medications.splice(index, 1);
+        }
+      });
+      await addUser(user);
+    }
+  }
+
   async function addNotificationToUser(
     notification: NotificationModal,
     newNotificationId: string
@@ -95,6 +107,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         addMedicationToUser,
         addNotificationToUser,
         removeNotificationFromUser,
+        removeMedicationFromUser,
       }}
     >
       {children}

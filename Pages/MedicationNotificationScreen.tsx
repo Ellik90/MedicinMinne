@@ -22,7 +22,7 @@ export default function MedicationNotificationScreen() {
   const [isDatePickerVisible, setDatePickerVisible] = useState(false);
   const [repetition, setRepetition] = useState("Dagligen");
   const [showRepetitionPicker, setShowRepetitionPicker] = useState(false);
-  const { user, setUser } = useUserContext();
+  const { user, setUser, removeMedicationFromUser } = useUserContext();
   const route = useRoute<Props>();
   const { id } = route.params;
   const medication = user?.medications?.find((m) => m.id === id);

@@ -13,12 +13,14 @@ import { RootStackParamList } from "./Navigator";
 import { useUserContext } from "../Contexts/UserContext";
 import { useMedicationContext } from "../Contexts/MedicationContext";
 import { useNotificationContext } from "../Contexts/NotificationContext";
+import { useTheme } from "../Contexts/ThemeContext";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Användarsidan">;
 
 export default function UserScreen({ navigation }: Props) {
-  const { user } = useUserContext();
+  const { user, removeMedicationFromUser } = useUserContext();
   const { notifications } = useNotificationContext();
+  const theme = useTheme();
 
   if (user && user.medications) {
     user.medications.forEach((medication, index) => {
@@ -27,6 +29,10 @@ export default function UserScreen({ navigation }: Props) {
       );
     });
   }
+
+  const handleRemoveMedication = (medicationId: string) => {
+    removeMedicationFromUser(medicationId);
+  };
 
   return (
     <View style={styles.container}>
@@ -52,7 +58,7 @@ export default function UserScreen({ navigation }: Props) {
         style={styles.button}
         onPress={() => {
           if (user && user.id) {
-            navigation.navigate("Notiser", { id: user.id }); 
+            navigation.navigate("Notiser", { id: user.id });
           }
         }}
       >
@@ -82,8 +88,19 @@ export default function UserScreen({ navigation }: Props) {
             >
               <Text style={styles.buttonText}>Ställ in påminnelse</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+            style={[styles.button, { backgroundColor: "red" }]}
+            onPress={() => {
+              if (user && item.id) {
+                handleRemoveMedication(item.id); 
+              }
+            }}
+          >
+            <Text style={styles.buttonText}>Radera</Text>
+          </TouchableOpacity>
           </View>
         )}
+        extraData={user?.medications}
       />
     </View>
   );
