@@ -111,28 +111,33 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   button: {
+    padding: 15,
+    alignItems: "center",
+    
+    borderRadius: 10,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    backgroundColor: 'white',
-    borderRadius: 5,
+    backgroundColor: 'pink',
+
     marginHorizontal: 10,
   },
   retakeButtonContainer: {
     position: 'absolute',
     bottom: 107,
     left: 160,
+    
     right: 10,
     alignItems: 'center',
   },
   retakeButton: {
     paddingHorizontal: 20,
     paddingVertical: 10,
-    backgroundColor: 'white',
+    backgroundColor: 'pink',
     borderRadius: 5,
   },
   text: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 20,
+    color: 'white',
   },
   imageContainer: {
     position: 'absolute',
@@ -147,13 +152,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   usePhotoButton: {
+    padding: 15,
+    alignItems: "center",
+    margin: 5,
+    borderRadius: 10,
     position: 'absolute',
     bottom: 35,
     alignSelf: 'center',
-    backgroundColor: 'white',
+    backgroundColor: 'pink',
     paddingHorizontal: 20,
     paddingVertical: 10,
-    borderRadius: 5,
   },
 });
 

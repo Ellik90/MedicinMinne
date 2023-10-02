@@ -131,7 +131,7 @@ export default function MedicationNotificationScreen() {
           style={styles.button}
           onPress={handleConfirmNotification}
         >
-          <Text>Bekräfta tid och schemalägg påminnelse</Text>
+          <Text style={styles.buttonText}>Schemalägg påminnelse</Text>
         </TouchableOpacity>
       )}
 
@@ -141,15 +141,15 @@ export default function MedicationNotificationScreen() {
             Notis schemalagd för {selectedDate?.toString()}
           </Text>
         )}
-
-        <Text>{medication?.name}</Text>
-        <Text>{medication?.dose}</Text>
-        <Text>{medication?.time}</Text>
-        <Text>{medication?.comment}</Text>
-        <Image
-          source={{ uri: medication?.url }}
-          style={{ height: 100, width: 100 }}
-        />
+        <View style={styles.medicationInfoContainer}>
+          <Text style={styles.notificationText}>{medication?.name}</Text>
+          <Text style={styles.notificationText}>{medication?.dose}</Text>
+          <Text style={styles.notificationText}>{medication?.time}</Text>
+          <Text style={styles.notificationText}>{medication?.comment}</Text>
+        </View>
+        <View style={styles.imageContainer}>
+          <Image style={styles.image} source={{ uri: medication?.url }} />
+        </View>
       </View>
     </View>
   );
@@ -159,6 +159,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    alignItems: "center",
+  },
+  notificationContainer: {
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  notificationText: {
+    fontSize: 20,
+  },
+  medicationInfoContainer: {
+    marginBottom: 10,
+    padding: 10,
+  },
+  image: {
+    height: 200,
+    width: 200,
+    borderRadius: 10,
+  },
+  imageContainer: {
     alignItems: "center",
   },
   title: {
@@ -171,17 +190,22 @@ const styles = StyleSheet.create({
     backgroundColor: "pink",
     padding: 15,
     borderRadius: 5,
-    marginTop: 20,
+    marginTop: 5,
   },
   buttonText: {
     color: "white",
     fontSize: 20,
   },
-  notificationText: {
-    marginTop: 20,
-    fontSize: 18,
-  },
   picker: {
     width: 200,
+    marginTop: -5,
+    margin: -50,
+    padding: -50,
+  },
+  infoText: {
+    fontSize: 30,
+    fontWeight: "bold",
+    marginBottom: 20,
+    textAlign: "center",
   },
 });

@@ -51,7 +51,7 @@ export default function LoginScreen({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1/2,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "pink",
     padding: 15,
-    borderRadius: 5,
+    borderRadius: 10,
   },
   buttonText: {
     color: "white",

@@ -48,29 +48,30 @@ export default function ActiveNotificationListScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={cancelAllScheduledNotifications}>
-        <Text>Radera alla notiser från enheten</Text>
+      <TouchableOpacity style={[styles.button, { backgroundColor: "#C08081" }]} onPress={cancelAllScheduledNotifications}>
+
+        <Text  style={styles.buttonText}>Radera alla notiser</Text>
       </TouchableOpacity>
       <FlatList
         data={user?.notifiCations || []}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.medicationItem}>
-            <Text>{item.name}</Text>
-            <Text>{item.dose}</Text>
-            <Text>{item.time}</Text>
-            <Text>{item.comment}</Text>
+            <Text style={styles.notificationText}>{item.name}</Text>
+            <Text style={styles.notificationText}>{item.dose}</Text>
+            <Text style={styles.notificationText}>{item.time}</Text>
+            <Text style={styles.notificationText}>{item.comment}</Text>
             <Image
               source={{ uri: item.url }}
-              style={{ width: 100, height: 100 }}
+              style={{ width: 170, height: 150, borderRadius: 10 }}
             />
-            <Text>Valt datum: {item.selectedDate?.toString()}</Text>
+            <Text style={styles.notificationText}>Valt datum: {item.selectedDate?.toString()}</Text>
 
             <TouchableOpacity
-                style={styles.button}
+                style={[styles.button, { backgroundColor: "#C08081" }]}
                 onPress={() => handleDeleteNotification(item.id)}
               >
-                <Text>Radera notis</Text>
+                <Text style={styles.buttonText}>Radera notis</Text>
               </TouchableOpacity>
           </View>
         )}
@@ -82,8 +83,9 @@ export default function ActiveNotificationListScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    backgroundColor: "#ffffff",
     alignItems: "center",
+    justifyContent: "center",
   },
   input: {
     width: "80%",
@@ -96,8 +98,10 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "pink",
-    padding: 15,
-    borderRadius: 5,
+    padding: 13,
+    alignItems: "center",
+    margin: 5,
+    borderRadius: 10,
   },
   buttonText: {
     color: "white",
@@ -105,7 +109,7 @@ const styles = StyleSheet.create({
   },
   medicationItem: {
     margin: 10,
-    padding: 10,
+   
     borderWidth: 1,
     borderColor: "#ccc",
   },

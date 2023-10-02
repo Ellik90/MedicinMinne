@@ -33,7 +33,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   
   const theme: Theme = {
     backgroundColor: "#ffffff",
-    buttonColor: "red",
+    buttonColor: "C08081",
     buttonTextColor: "white",
     buttonTextSize: 20,
     alignItems: "center",

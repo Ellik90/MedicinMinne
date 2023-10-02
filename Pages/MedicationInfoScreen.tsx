@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { View, TextInput, Text, Image, Button } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import { useMedicationContext } from "../Contexts/MedicationContext";
 import { useUserContext } from "../Contexts/UserContext";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -17,10 +25,10 @@ interface Medication {
 
 export default function MedicationInfoScreen({ navigation }: Props) {
   const { medication, setMedication } = useMedicationContext();
-  const [name, setName] = useState(medication?.name || '');
-  const [dose, setDose] = useState(medication?.dose || '');
-  const [time, setTime] = useState(medication?.time || '');
-  const [comment, setComment] = useState(medication?.comment || '');
+  const [name, setName] = useState<string>(medication?.name || ""); // Lägg till typer för states
+  const [dose, setDose] = useState<string>(medication?.dose || "");
+  const [time, setTime] = useState<string>(medication?.time || "");
+  const [comment, setComment] = useState<string>(medication?.comment || "");
   const { user, setUser, addMedicationToUser } = useUserContext();
 
   const handleNameChange = (newName: string) => {
@@ -44,42 +52,87 @@ export default function MedicationInfoScreen({ navigation }: Props) {
   };
 
   const saveMedicationToUser = () => {
-    if(medication){
+    if (medication) {
       addMedicationToUser(medication);
     }
     navigation.navigate("Användarsidan");
   };
 
   return (
-    <View>
-      <Text>Medication Name:</Text>
+    <ScrollView contentContainerStyle={styles.container} >
+      <Text style={styles.text}>Medication Name:</Text>
       <TextInput
+        style={styles.input}
         onChangeText={handleNameChange}
         value={name}
         placeholder="Namn"
       />
+
+      <Text style={styles.text}>Dos:</Text>
       <TextInput
+        style={styles.input}
         onChangeText={handleDoseChange}
         value={dose}
         placeholder="Dos"
       />
+
+      <Text style={styles.text}>Klockslag:</Text>
       <TextInput
+        style={styles.input}
         onChangeText={handleTimeChange}
         value={time}
         placeholder="Klockslag"
       />
+
+      <Text style={styles.text}>Kommentar:</Text>
       <TextInput
+        style={styles.input}
         onChangeText={handleCommentChange}
         value={comment}
         placeholder="Kommentar"
       />
 
       {medication?.url && (
-        <Image source={{ uri: medication.url }} style={{ width: 100, height: 100 }} />
+        <Image source={{ uri: medication.url }} style={styles.image} />
       )}
 
-      <Button title="Spara medicin" onPress={saveMedicationToUser}></Button>
-    </View>
+      <TouchableOpacity style={styles.button} onPress={saveMedicationToUser}>
+        <Text style={styles.buttonText}>Spara medicin</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 }
-  
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    padding: 20,
+  },
+  text: {
+    fontSize: 18,
+    marginBottom: 5,
+  },
+  input: {
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 15,
+  },
+  image: {
+    width: 100,
+    height: 100,
+  },
+  button: {
+    backgroundColor: "pink",
+    borderRadius: 5,
+    padding: 15,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+});
