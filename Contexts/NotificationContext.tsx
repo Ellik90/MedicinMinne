@@ -31,7 +31,6 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
   
   const scheduleNotification = async (date: Date, repetition: string, notificationBody:string) => {
     const now = new Date();
-    const timeDiff = date.getTime() - now.getTime();
 
     Notifications.setNotificationHandler({
       handleNotification: async () => ({
@@ -42,9 +41,8 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
     });
 
     let repeatInterval = 0;
-    // KOLLA UPP ANDRA ALTERNATIV FÖR ATT SKAPA REPETITION, EV EFTER CALENDER IST?
     if (repetition === "Dagligen") {
-      repeatInterval = 24 * 60 * 60 * 1000;
+      repeatInterval = 24 * 60 * 60 * 1000
     } else if (repetition === "Varannan dag") {
       repeatInterval = 48 * 60 * 60 * 1000;
     } else if (repetition === "Veckovis") {
@@ -52,15 +50,11 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
     } else if (repetition === "Månadsvis") {
     } else if (repetition === "Varje minut") {
       repeatInterval = 60 * 1000;
-    } else if (repetition === "var femte sekund") {
-      repeatInterval = 5 * 1000;
     }
-
-
+    
      const notificationId = await Notifications.scheduleNotificationAsync({
       content: {
-        title: "Medicinpåminnelse",
-        
+        title: "Medicinpåminnelse",       
         body: notificationBody,
       },
       trigger: {

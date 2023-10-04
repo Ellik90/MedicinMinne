@@ -35,77 +35,89 @@ export default function UserScreen({ navigation }: Props) {
   };
 
   return (
-
     <View style={styles.container}>
       <Text style={styles.welcomeText}>Välkommen {user?.name}</Text>
       <Text></Text>
       <View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          navigation.navigate("Kamera");
-        }}
-      >
-        <Text style={styles.buttonText}>Kamera</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          navigation.navigate("Fotobibliotek");
-        }}
-      >
-        <Text style={styles.buttonText}>Foto från bibliotek</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          if (user && user.id) {
-            navigation.navigate("Notiser", { id: user.id });
-          }
-        }}
-      >
-        <Text style={styles.buttonText}>Mina Notiser</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            navigation.navigate("Medicinsökning");
+          }}
+        >
+          <Text style={styles.buttonText}>Sök Medicininformation</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            navigation.navigate("Kamera");
+          }}
+        >
+          <Text style={styles.buttonText}>Kamera</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            navigation.navigate("Fotobibliotek");
+          }}
+        >
+          <Text style={styles.buttonText}>Foto från bibliotek</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            if (user && user.id) {
+              navigation.navigate("Notiser", { id: user.id });
+            }
+          }}
+        >
+          <Text style={styles.buttonText}>Mina Notiser</Text>
+        </TouchableOpacity>
       </View>
 
-        <View style={styles.flatListContainer}>
-      <FlatList
-        data={user?.medications || []}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.medicationItem}>
-            <Text style={styles.MedicationName}>{item.name}</Text>
-            
-            {
-              <Image
-                source={{ uri: item.url }}
-                style={{ width: 190, height: 170, marginStart: 70, borderRadius: 10  }}
-              />
-            }
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                if (item.id) {
-                  navigation.navigate("MedicationNote", { id: item.id });
-                }
-              }}
-            >
-              <Text style={styles.buttonText}>Ställ in påminnelse</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-            style={[styles.button, { backgroundColor: "#C08081" }]}
-            onPress={() => {
-              if (user && item.id) {
-                handleRemoveMedication(item.id); 
+      <View style={styles.flatListContainer}>
+        <FlatList
+          data={user?.medications || []}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.medicationItem}>
+              <Text style={styles.MedicationName}>{item.name}</Text>
+
+              {
+                <Image
+                  source={{ uri: item.url }}
+                  style={{
+                    width: 190,
+                    height: 170,
+                    marginStart: 70,
+                    borderRadius: 10,
+                  }}
+                />
               }
-            }}
-          >
-            <Text style={styles.buttonText}>Radera</Text>
-          </TouchableOpacity>
-          </View>
-        )}
-        extraData={user?.medications}
-      />
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  if (item.id) {
+                    navigation.navigate("MedicationNote", { id: item.id });
+                  }
+                }}
+              >
+                <Text style={styles.buttonText}>Ställ in påminnelse</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, { backgroundColor: "#C08081" }]}
+                onPress={() => {
+                  if (user && item.id) {
+                    handleRemoveMedication(item.id);
+                  }
+                }}
+              >
+                <Text style={styles.buttonText}>Radera</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          extraData={user?.medications}
+        />
       </View>
     </View>
   );
@@ -123,7 +135,7 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 26,
     fontWeight: "bold",
-    
+
     marginTop: 10,
   },
   button: {
@@ -133,7 +145,6 @@ const styles = StyleSheet.create({
     margin: 5,
     borderRadius: 10,
     top: 5,
-   
   },
   MedicationName: {
     padding: 10,
@@ -149,18 +160,18 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "#ccc",
   },
-  
+
   medicationContent: {
-    flex: 1, 
+    flex: 1,
   },
   flatListContainer: {
-    flex: 1, 
+    flex: 1,
     width: "95%",
-    borderWidth: 1,      
-    borderColor: "#ccc", 
-    shadowOpacity: 0.10,      
-    shadowRadius: 3.84,       
-    elevation: 5, 
-    margin: 10, 
+    borderWidth: 1,
+    borderColor: "#ccc",
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
+    margin: 10,
   },
 });

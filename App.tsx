@@ -6,11 +6,13 @@ import { UserProvider } from './Contexts/UserContext';
 import { MedicationProvider } from './Contexts/MedicationContext';
 import { NotificationProvider } from './Contexts/NotificationContext';
 import { ThemeProvider } from './Contexts/ThemeContext';
+import { ApiProvider } from './Contexts/ApiMedicineContext';
 
 
 const App: React.FC = () => {
 
   return (
+    <ApiProvider>
     <ThemeProvider>
     <MedicationProvider>
     <UserProvider>
@@ -28,6 +30,7 @@ const App: React.FC = () => {
     </UserProvider>
     </MedicationProvider>
     </ThemeProvider>
+    </ApiProvider>
   );
 };
 
