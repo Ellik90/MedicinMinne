@@ -6,12 +6,7 @@ type Theme = {
   buttonColor: string;
   buttonTextColor: string;
   buttonTextSize: number;
-  alignItems: "center",
-  marginTop: 20,
-  padding: 10,
-  color: "white",
-  fontSize: 20,
-  fontWeight: "bold",
+
  
 };
 
@@ -33,15 +28,10 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   
   const theme: Theme = {
     backgroundColor: "#ffffff",
-    buttonColor: "C08081",
+    buttonColor: "#C08081",
     buttonTextColor: "white",
     buttonTextSize: 20,
-    alignItems: "center",
-    marginTop: 20,
-    padding: 10,
-    color: "white",
-    fontSize: 20,
-    fontWeight: "bold",
+ 
   };
 
   return (

@@ -105,7 +105,7 @@ export default function UserScreen({ navigation }: Props) {
                 <Text style={styles.buttonText}>Ställ in påminnelse</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.button, { backgroundColor: "#C08081" }]}
+                style={[styles.button, { backgroundColor: theme.buttonColor }]}
                 onPress={() => {
                   if (user && item.id) {
                     handleRemoveMedication(item.id);

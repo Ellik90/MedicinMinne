@@ -13,6 +13,7 @@ import { useNotificationContext } from "../Contexts/NotificationContext";
 import { useNavigation } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
 import { useUserContext } from "../Contexts/UserContext";
+import { useTheme } from "../Contexts/ThemeContext";
 
 
 type Props = NativeStackScreenProps<RootStackParamList, "Notiser">;
@@ -20,7 +21,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "Notiser">;
 export default function ActiveNotificationListScreen({ navigation }: Props) {
   const { removeNotificationFromUser } = useUserContext();
   const { user } = useUserContext();
- 
+ const theme = useTheme();
   const { notifications, cancelAllScheduledNotifications,  cancelScheduledNotificationById } =
     useNotificationContext();
   const { navigate } = useNavigation();
@@ -48,7 +49,7 @@ export default function ActiveNotificationListScreen({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={[styles.button, { backgroundColor: "#C08081" }]} onPress={cancelAllScheduledNotifications}>
+      <TouchableOpacity style={[styles.button, { backgroundColor: theme.buttonColor }]} onPress={cancelAllScheduledNotifications}>
 
         <Text  style={styles.buttonText}>Radera alla notiser</Text>
       </TouchableOpacity>
@@ -68,7 +69,7 @@ export default function ActiveNotificationListScreen({ navigation }: Props) {
             <Text style={styles.notificationText}>Valt datum: {item.selectedDate?.toString()}</Text>
 
             <TouchableOpacity
-                style={[styles.button, { backgroundColor: "#C08081" }]}
+                style={[styles.button, { backgroundColor: theme.buttonColor }]}
                 onPress={() => handleDeleteNotification(item.id)}
               >
                 <Text style={styles.buttonText}>Radera notis</Text>
