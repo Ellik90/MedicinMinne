@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -14,13 +14,23 @@ import { useUserContext } from "../Contexts/UserContext";
 import { useMedicationContext } from "../Contexts/MedicationContext";
 import { useNotificationContext } from "../Contexts/NotificationContext";
 import { useTheme } from "../Contexts/ThemeContext";
+import { useFocusEffect } from "@react-navigation/native";
+
 
 type Props = NativeStackScreenProps<RootStackParamList, "Användarsidan">;
 
 export default function UserScreen({ navigation }: Props) {
-  const { user, removeMedicationFromUser } = useUserContext();
+  const { user, removeMedicationFromUser, getUser } = useUserContext();
   const { notifications } = useNotificationContext();
   const theme = useTheme();
+
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getUser();
+      console.log("user.", user);
+    }, [])
+  );
 
   if (user && user.medications) {
     user.medications.forEach((medication, index) => {
@@ -116,7 +126,7 @@ export default function UserScreen({ navigation }: Props) {
               </TouchableOpacity>
             </View>
           )}
-          extraData={user?.medications}
+          // extraData={user?.medications}
         />
       </View>
     </View>

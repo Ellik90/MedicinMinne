@@ -17,6 +17,7 @@ type UserContextType = {
   removeNotificationFromUser: (id: string) => Promise<void>;
   removeMedicationFromUser: (medicationId: string) => void;
   savecaregiverPhoneNumber: (caregiverPhoneNumber: string) => Promise<void>;
+  getUser: () => Promise<void>;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -40,6 +41,16 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     }
     return false;
   }
+
+  async function getUser() {
+    const userFromAsyncStorage = await getData();
+
+    console.log("userfromasyncstorage:", userFromAsyncStorage);
+    
+      console.log(userFromAsyncStorage);
+      if (userFromAsyncStorage)
+      setUser(userFromAsyncStorage);
+    }
 
   async function savecaregiverPhoneNumber(
     caregiverPhoneNumber: string | undefined,
@@ -117,6 +128,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         removeNotificationFromUser,
         removeMedicationFromUser,
         savecaregiverPhoneNumber,
+        getUser,
       }}
     >
       {children}
