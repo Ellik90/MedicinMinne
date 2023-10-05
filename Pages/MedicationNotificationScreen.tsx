@@ -11,6 +11,8 @@ import {
   NotificationModal,
   useNotificationContext,
 } from "../Contexts/NotificationContext";
+import * as SMS from 'expo-sms';
+
 
 import DateTimePicker from "@react-native-community/datetimepicker";
 
@@ -74,8 +76,27 @@ export default function MedicationNotificationScreen() {
       );
 
       addNotificationToUser(newNotification, newNotificationId);
+    // Skicka SMS till anhörig här
+    if (user?.caregiverPhoneNumber) {
+      const smsResult = await SMS.sendSMSAsync(
+        [user.caregiverPhoneNumber],
+        `Notis: ${newNotification.name} - ${newNotification.time}`,
+        {
+          attachments: [], // Du kan lägga till bilagor om det behövs
+        }
+      );
+
+      // Kontrollera SMS-sändningsresultatet
+      if (smsResult.result === 'sent') {
+        console.log('SMS skickades framgångsrikt.');
+      } else if (smsResult.result === 'cancelled') {
+        console.log('Användaren avbröt SMS-sändningen.');
+      } else {
+        console.log('Status för SMS är okänt.');
+      }
     }
-  };
+  }
+};
 
   const repetitionOptions = [
     "Dagligen",

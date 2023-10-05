@@ -12,6 +12,7 @@ export default function InstallationScreen({ navigation }: Props) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [personnummer, setPersonnummer] = useState('');
+  const [caregiverPhoneNumber, setCaregiverPhoneNumber] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [logInName, setLogInName] = useState('');
   const [passWord, setPassWord] = useState('');
@@ -24,6 +25,7 @@ export default function InstallationScreen({ navigation }: Props) {
       username: `${logInName}`,
       phoneNumber:`${phoneNumber}`,
       password: `${passWord}`,
+      caregiverPhoneNumber:`${caregiverPhoneNumber}`,
       personnummer:`${personnummer}`,
       medications: [], 
       notifiCations:[]
@@ -61,6 +63,12 @@ export default function InstallationScreen({ navigation }: Props) {
         style={styles.input}
         onChangeText={(text) => setPhoneNumber(text)}
         value={phoneNumber}
+      />
+       <Text style={styles.text}>En ahörigs telefonnummer:</Text>
+      <TextInput
+        style={styles.input}
+        onChangeText={(text) => setCaregiverPhoneNumber(text)}
+        value={caregiverPhoneNumber}
       />
       <Text style={styles.text}>Välj Användarnamn:</Text>
       <TextInput
@@ -106,13 +114,13 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   button: {
-    backgroundColor: 'pink', // Bakgrundsfärg (rosa)
+    backgroundColor: 'pink', 
     borderRadius: 5,
     padding: 15,
     alignItems: 'center',
   },
   buttonText: {
-    color: 'white', // Textfärg (vit)
+    color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
   },

@@ -34,6 +34,7 @@ Det kommer att öppna Expo Developer Tools i din webbläsare, och du kan starta 
 - Ta bilder med enhetens kamera och använda dem i appen.
 - Visning av medicininformation och medicinpåminnelser.
 - extern modul Async-storage används för att spara och hantera data.
+- Tar in ett web API från läkemedelsverket för att få medicininformation
 
 
 ## Krav för godkänt
@@ -52,7 +53,7 @@ lista över genomförda krav.
 
 1.[] Alla punkter för godkänt är uppfyllda
 2.[x] Ytterligare en valfri extern modul används i projektet.
-3.[] Appen ska prata med ett Web-API för att hämta data.
+3.[x] Appen ska prata med ett Web-API för att hämta data.
 4.[] Appen ska laseras på en Appstore (Deadline samma dag som kursen slutar)
 
 ## React-native komponenter 
@@ -72,6 +73,7 @@ lista över genomförda krav.
 - ImagePicker
 - Camera
 - Picker
+- Sms
 
 ## MappStruktur
 Koden är uppdelad i olika mappar för att separera olika delar av funktionaliteten, tex Contexts, components, Screens, och Navigation. Detta gör det enklare att hitta specifik kod när du behöver göra ändringar.

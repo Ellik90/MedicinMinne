@@ -16,6 +16,7 @@ type UserContextType = {
   ) => Promise<void>;
   removeNotificationFromUser: (id: string) => Promise<void>;
   removeMedicationFromUser: (medicationId: string) => void;
+  savecaregiverPhoneNumber: (caregiverPhoneNumber: string) => Promise<void>;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -39,6 +40,13 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     }
     return false;
   }
+
+  async function savecaregiverPhoneNumber(
+    caregiverPhoneNumber: string | undefined,
+  ) {
+   
+  }
+  
 
   async function addUser(user: User | null) {
     if (user != null) {
@@ -108,6 +116,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
         addNotificationToUser,
         removeNotificationFromUser,
         removeMedicationFromUser,
+        savecaregiverPhoneNumber,
       }}
     >
       {children}
