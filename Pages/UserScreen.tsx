@@ -42,6 +42,9 @@ export default function UserScreen({ navigation }: Props) {
 
   const handleRemoveMedication = (medicationId: string) => {
     removeMedicationFromUser(medicationId);
+  
+        getUser();
+   
   };
 
   return (
