@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
-import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 import { RootStackParamList } from "./Navigator";
 import { useUserContext } from "../Contexts/UserContext";
@@ -76,17 +75,15 @@ export default function MedicationNotificationScreen() {
       );
 
       addNotificationToUser(newNotification, newNotificationId);
-    // Skicka SMS till anhörig här
     if (user?.caregiverPhoneNumber) {
       const smsResult = await SMS.sendSMSAsync(
         [user.caregiverPhoneNumber],
         `Notis: ${newNotification.name} - ${newNotification.time}`,
         {
-          attachments: [], // Du kan lägga till bilagor om det behövs
+          attachments: [], 
         }
       );
 
-      // Kontrollera SMS-sändningsresultatet
       if (smsResult.result === 'sent') {
         console.log('SMS skickades framgångsrikt.');
       } else if (smsResult.result === 'cancelled') {

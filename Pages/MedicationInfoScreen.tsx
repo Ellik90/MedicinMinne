@@ -11,7 +11,6 @@ import { useMedicationContext } from "../Contexts/MedicationContext";
 import { useUserContext } from "../Contexts/UserContext";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "./Navigator";
-import * as SMS from 'expo-sms';
 
 type Props = NativeStackScreenProps<RootStackParamList, "MedicationInfoScreen">;
 

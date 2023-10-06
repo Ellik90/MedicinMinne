@@ -2,7 +2,7 @@ MedicinMinnesAppen // MMA
 
 # Medicinminnesappen
 
-Det här är en mobilapplikation utvecklad med React Native för att hantera medicinering och medicinpåminnelser.
+Det här är en mobilapplikation utvecklad med React Native för att hantera medicinering och medicinpåminnelser för användare och för anhöriga så flera parter kan känna sig bekväma vid en användares medicinintag!
 
 ## Bygga och köra projektet
 
@@ -46,15 +46,15 @@ lista över genomförda krav.
 3.[x] React Navigation används för att skapa en bättre upplevelse i appen.
 4.[x] Git & GitHub har använts
 5.[x] Projektmappen innehåller en README.md fil - (läs ovan för mer info)
-6.[] Uppgiften lämnas in i tid!
-7.[] Muntlig presentation är genomförd
+6.[x] Uppgiften lämnas in i tid!
+7.[x] Muntlig presentation är genomförd
 
 ## Krav för väl godkänt:
 
-1.[] Alla punkter för godkänt är uppfyllda
+1.[x] Alla punkter för godkänt är uppfyllda
 2.[x] Ytterligare en valfri extern modul används i projektet.
 3.[x] Appen ska prata med ett Web-API för att hämta data.
-4.[] Appen ska laseras på en Appstore (Deadline samma dag som kursen slutar)
+4.[] Appen ska laseras på en Appstore (Deadline samma dag som kursen slutar) Kommer upp inom kort
 
 ## React-native komponenter 
 - View

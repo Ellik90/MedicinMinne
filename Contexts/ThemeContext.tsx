@@ -6,8 +6,6 @@ type Theme = {
   buttonColor: string;
   buttonTextColor: string;
   buttonTextSize: number;
-
- 
 };
 
 const ThemeContext = createContext<Theme | undefined>(undefined);
